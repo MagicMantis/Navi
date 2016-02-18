@@ -1,5 +1,6 @@
 package net.magicmantis.src.model;
 
+import net.magicmantis.src.model.ships.Drone;
 import net.magicmantis.src.server.dataStructures.EntityData;
 
 import static org.lwjgl.opengl.GL11.*;

@@ -1,6 +1,8 @@
 package net.magicmantis.src.server.dataStructures;
 
 import net.magicmantis.src.model.*;
+import net.magicmantis.src.model.ships.Player;
+import net.magicmantis.src.model.ships.Ship;
 
 /**
  * Created by Joseph on 5/10/2015.

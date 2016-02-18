@@ -1,0 +1,25 @@
+To-Do List:
+- Fix spawning locations
+- Add kills and a scoreboard when tab is pressed
+- Add a win condition
+- Add battlefront style stats screen (most kills, most deaths; include drones in statistics
+
+----- First Test/Release (Pre-Strategy) ---------
+
+- Fix collision detection to support different unit models and sizes
+- Begin adding new units, weapons, and structures
+- Change the art
+- Add environment (asteroids, gas fields)
+- Add methods for players to build new structures/units in game
+- Add resources and resource gathering
+- Improve AI
+
+----- Strategy Update ---------
+
+Current Known Issues:
+- Crashed caused by modification of EntityList (probably fixed but keep watch)
+- Crash on username drawing in the menu. (Status unknown)
+- Occasionally the health bar is negative length during respawn
+- Move camera to the respawn point in multiplayer
+- Switching from multiplayer to singleplayer causes failed generation
+- Users do not properly disconnect from a game when they enter a new multiplayer lobby from pause menu

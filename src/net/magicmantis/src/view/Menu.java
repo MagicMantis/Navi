@@ -4,15 +4,11 @@ import net.magicmantis.src.exceptions.AccessDeniedException;
 import net.magicmantis.src.exceptions.FailedStartGameException;
 import net.magicmantis.src.exceptions.GameNotFoundException;
 import net.magicmantis.src.exceptions.UnknownOptionException;
-import net.magicmantis.src.model.Ship;
-import net.magicmantis.src.server.dataStructures.UserData;
 import net.magicmantis.src.services.ServerControllerProxy;
-import net.magicmantis.src.services.TextEngine;
 import net.magicmantis.src.view.GUI.Button;
 import net.magicmantis.src.view.GUI.GUIElement;
 import net.magicmantis.src.view.GUI.Switch;
 import net.magicmantis.src.view.GUI.TeamSelector;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.net.ConnectException;

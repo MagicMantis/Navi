@@ -1,6 +1,7 @@
 package net.magicmantis.src.server;
 
 import net.magicmantis.src.model.*;
+import net.magicmantis.src.model.ships.Player;
 import net.magicmantis.src.server.dataStructures.EntityData;
 import net.magicmantis.src.server.dataStructures.UserData;
 import net.magicmantis.src.view.Game;

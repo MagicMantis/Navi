@@ -1,5 +1,6 @@
 package net.magicmantis.src.model;
 
+import net.magicmantis.src.model.ships.Player;
 import net.magicmantis.src.server.dataStructures.EntityData;
 
 import java.util.ArrayList;

@@ -1,15 +1,13 @@
 package net.magicmantis.src.view.GUI;
 
 import net.magicmantis.src.exceptions.AccessDeniedException;
-import net.magicmantis.src.model.Ship;
-import net.magicmantis.src.server.OnlineGame;
+import net.magicmantis.src.model.ships.Ship;
 import net.magicmantis.src.server.dataStructures.UserData;
 import net.magicmantis.src.services.TextEngine;
 import net.magicmantis.src.view.Game;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.Callable;
 
 /**

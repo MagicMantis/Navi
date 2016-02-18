@@ -1,5 +1,8 @@
-package net.magicmantis.src.model;
+package net.magicmantis.src.model.ships;
 
+import net.magicmantis.src.model.Bullet;
+import net.magicmantis.src.model.Level;
+import net.magicmantis.src.model.Target;
 import net.magicmantis.src.server.dataStructures.EntityData;
 import net.magicmantis.src.view.Game;
 import org.lwjgl.opengl.GL11;
@@ -234,6 +237,7 @@ public class Ship extends Target {
 	{
 		new Bullet(getX(), getY(), getTeam(), 4+rand.nextInt(4)/2, getFacingDirection()+offset, level);
 	}
+
 
 	/**
 	 * Draw this ship

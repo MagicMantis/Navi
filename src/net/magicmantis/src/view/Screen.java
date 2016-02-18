@@ -144,7 +144,6 @@ public class Screen {
                 secondStartTime = System.nanoTime();
                 fps = framesThisSecond;
                 framesThisSecond = 0;
-                System.out.println("activated");
             }
 
             glfwSwapBuffers(window); // swap the color buffers

@@ -1,6 +1,13 @@
-package net.magicmantis.src.model;
+package net.magicmantis.src.model.ships;
 
+import net.magicmantis.src.model.Level;
+import net.magicmantis.src.model.Target;
 import net.magicmantis.src.server.dataStructures.EntityData;
+import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glVertex2d;
 
 /**
  * Drone class: simplest artificial intelligence ship. Incapable of being controlled, instances of this class
@@ -149,5 +156,41 @@ public class Drone extends Ship {
     public void fromData(EntityData entityData) {
         super.fromData(entityData);
     }
+
+    /*// Drone sprite?
+    @Override
+    public void draw(int xView, int yView)
+    {
+        super.draw(xView, yView);
+
+        //get the color from the entity
+        double[] col = getColor();
+        GL11.glColor3d(col[0], col[1], col[2]);
+
+        double facingDir = getFacingDirection();
+
+        //create angles
+        double xDir = Math.cos(facingDir*Math.PI/180);
+        double yDir = Math.sin(facingDir*Math.PI/180);
+        double xDir2 = Math.cos((facingDir+120)%360*Math.PI/180);
+        double yDir2 = Math.sin((facingDir+120)%360*Math.PI/180);
+        double xDir3 = Math.cos((facingDir-120)%360*Math.PI/180);
+        double yDir3 = Math.sin((facingDir-120)%360*Math.PI/180);
+        double xDir4 = Math.cos((facingDir+150)%360*Math.PI/180);
+        double yDir4 = Math.sin((facingDir+150)%360*Math.PI/180);
+        double xDir5 = Math.cos((facingDir-150)%360*Math.PI/180);
+        double yDir5 = Math.sin((facingDir-150)%360*Math.PI/180);
+
+        glBegin(GL_LINE_LOOP);
+        glVertex2d((getX()+xDir*-3)-xView, (getY()+yDir*-3)-yView);
+        glVertex2d((getX()+xDir*12)-xView, (getY()+yDir*12)-yView);
+        glVertex2d((getX()+xDir2*6)-xView, (getY()+yDir2*6)-yView);
+        glVertex2d((getX()+xDir4*8)-xView, (getY()+yDir4*8)-yView);
+        glVertex2d((getX()+xDir*-3)-xView, (getY()+yDir*-3)-yView);
+        glVertex2d((getX()+xDir5*8)-xView, (getY()+yDir5*8)-yView);
+        glVertex2d((getX()+xDir3*6)-xView, (getY()+yDir3*6)-yView);
+        glVertex2d((getX()+xDir*12)-xView, (getY()+yDir*12)-yView);
+        glEnd();
+    }*/
 
 }
