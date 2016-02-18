@@ -22,6 +22,10 @@ public class Screen {
     private GLFWCursorPosCallback cursorPosCallback;
     private GLFWMouseButtonCallback mouseCallback;
 
+    private static int fps;
+    private int framesThisSecond;
+    private long secondStartTime;
+
     // The window handle
     private long window;
     private Game game;
@@ -67,6 +71,9 @@ public class Screen {
         window = glfwCreateWindow(WIDTH, HEIGHT, "Navi", NULL, NULL);
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
+
+        //init fps for fps counter
+        fps = 0;
 
         //create the game
         game = new Game(this, WIDTH, HEIGHT);
@@ -114,6 +121,9 @@ public class Screen {
         glOrtho(0, WIDTH, 0, HEIGHT, 1, -1);
         glMatrixMode(GL_MODELVIEW);
 
+        secondStartTime = System.nanoTime();
+        framesThisSecond = 0;
+
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( glfwWindowShouldClose(window) == GL_FALSE ) {
@@ -129,6 +139,13 @@ public class Screen {
             glEnd();
 
             game.draw();
+            framesThisSecond++;
+            if (System.nanoTime()-secondStartTime > 1000000000) {
+                secondStartTime = System.nanoTime();
+                fps = framesThisSecond;
+                framesThisSecond = 0;
+                System.out.println("activated");
+            }
 
             glfwSwapBuffers(window); // swap the color buffers
 
@@ -144,6 +161,10 @@ public class Screen {
             // invoked during this call.
             glfwPollEvents();
         }
+    }
+
+    public static int getFPS() {
+        return fps;
     }
 
 }

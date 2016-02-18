@@ -1,6 +1,7 @@
 package net.magicmantis.src.view;
 
 import net.magicmantis.src.model.*;
+import net.magicmantis.src.services.TextEngine;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.windows.POINT;
 import org.w3c.dom.Text;
@@ -116,6 +117,9 @@ public class HUD {
             GL11.glVertex2d(game.WIDTH-50, game.getHeight()-40+10);
             GL11.glVertex2d(game.WIDTH-150, game.getHeight()-40+10);
             GL11.glEnd();
+
+            //draw FPS counter
+            TextEngine.drawText("FPS  "+String.valueOf(Screen.getFPS()), game.WIDTH-130, game.getHeight()-60, 60, 12, false);
         }
 	}
 

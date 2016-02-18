@@ -311,6 +311,108 @@ public class TextEngine {
                 glVertex2d(x, y);
                 glVertex2d(x+width, y+height);
                 break;
+            case '1':
+                glVertex2d(x+width/2, y+height);
+                glVertex2d(x+width/2, y);
+                break;
+            case '2':
+                glVertex2d(x, y+height);
+                glVertex2d(x+width, y+height);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x, y+height/2);
+                glVertex2d(x, y);
+                glVertex2d(x+width, y);
+                glVertex2d(x, y);
+                glVertex2d(x, y+height/2);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x+width, y+height);
+                break;
+            case '3':
+                glVertex2d(x, y+height);
+                glVertex2d(x+width, y+height);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x, y+height/2);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x+width, y);
+                glVertex2d(x, y);
+                glVertex2d(x+width, y);
+                glVertex2d(x+width, y+height);
+                break;
+            case '4':
+                glVertex2d(x, y+height);
+                glVertex2d(x, y+height/2);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x+width, y+height);
+                glVertex2d(x+width, y);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x, y+height/2);
+                break;
+            case '5':
+                glVertex2d(x+width, y+height);
+                glVertex2d(x, y+height);
+                glVertex2d(x, y+height/2);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x+width, y);
+                glVertex2d(x, y);
+                glVertex2d(x+width, y);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x, y+height/2);
+                glVertex2d(x, y+height);
+                break;
+            case '6':
+                glVertex2d(x+width, y+height);
+                glVertex2d(x, y+height);
+                glVertex2d(x, y);
+                glVertex2d(x+width, y);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x, y+height/2);
+                glVertex2d(x, y+height);
+                break;
+            case '7':
+                glVertex2d(x, y+height);
+                glVertex2d(x+width, y+height);
+                glVertex2d(x+width, y);
+                glVertex2d(x+width, y+height);
+                break;
+            case '8':
+                glVertex2d(x, y+height);
+                glVertex2d(x+width, y+height);
+                glVertex2d(x+width, y);
+                glVertex2d(x, y);
+                glVertex2d(x, y+height/2);
+                glVertex2d(x+width, y+height/2);
+                glVertex2d(x, y+height/2);
+                break;
+            case '9':
+                glVertex2d(x+width, y);
+                glVertex2d(x+width, y+height);
+                glVertex2d(x, y+height);
+                glVertex2d(x, y+height/2);
+                glVertex2d(x+width, y+height/2);
+                break;
+            case '0':
+                glVertex2d(x, y+height);
+                glVertex2d(x+width, y+height);
+                glVertex2d(x+width, y);
+                glVertex2d(x, y);
+                break;
+            case ' ':
+                break;
+            default:
+                glVertex2d(x, y+height);
+                glVertex2d(x+width, y+5*height/6);
+                glVertex2d(x, y+5*height/6);
+                glVertex2d(x+width, y+4*height/6);
+                glVertex2d(x, y+4*height/6);
+                glVertex2d(x+width, y+3*height/6);
+                glVertex2d(x, y+3*height/6);
+                glVertex2d(x+width, y+2*height/6);
+                glVertex2d(x, y+2*height/6);
+                glVertex2d(x+width, y+1*height/6);
+                glVertex2d(x, y+1*height/6);
+                glVertex2d(x+width, y);
+                glVertex2d(x, y);
+                break;
         }
         glEnd();
     }
