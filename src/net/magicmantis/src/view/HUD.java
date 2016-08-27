@@ -140,9 +140,9 @@ public class HUD {
             }
         }
         //lock the camera whenever the left mouse isn't pressed
-        else if (button == 0 && !Game.mousePressed) {
-            level.setLockedCamera(true);
-        }
+//        else if (button == 0 && !Game.mousePressed) {
+//            level.setLockedCamera(true);
+//        }
         return false;
     }
 

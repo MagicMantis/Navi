@@ -44,11 +44,11 @@ public class Drone extends Ship {
 	public void update()
 	{	
 		super.update();
-		getTarget();
+		findTarget();
 		if (target == null)
 			return;
-		moveTowards(target.getX(), target.getY());
-		aim();
+		//moveTowards(target.getX(), target.getY());
+		//aim();
 		if (targetDistance <= 300)
 			fireWeapon();
 	}
@@ -56,7 +56,7 @@ public class Drone extends Ship {
 	/**
 	 * Find the nearest enemy ship and set target.
 	 */
-	public void getTarget()
+	public void findTarget()
 	{
 		double shortestDistance = -1;
 		int targetIndex = 0;
@@ -192,5 +192,9 @@ public class Drone extends Ship {
         glVertex2d((getX()+xDir*12)-xView, (getY()+yDir*12)-yView);
         glEnd();
     }*/
+
+    public Target getTarget() {
+    	return target;
+	}
 
 }

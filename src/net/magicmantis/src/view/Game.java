@@ -2,6 +2,7 @@ package net.magicmantis.src.view;
 
 import net.magicmantis.src.exceptions.GameNotFoundException;
 import net.magicmantis.src.model.Level;
+import net.magicmantis.src.model.TrainingField;
 import net.magicmantis.src.server.OnlineGame;
 import net.magicmantis.src.services.ServerController;
 import org.lwjgl.glfw.GLFW;
@@ -96,7 +97,7 @@ public class Game implements Runnable {
 	{
         //create hud too if there is not current level
 		if (level == null) {
-            level = new Level(this, width, height);
+            level = new TrainingField(this, width, height);
             level.generate();
             hud = new HUD(this, level);
         }

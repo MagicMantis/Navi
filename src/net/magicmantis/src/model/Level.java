@@ -52,7 +52,7 @@ public class Level {
 
         this.game = game;
         minimapWidth = minimapHeight = 0;
-        lockedCamera = true;
+        lockedCamera = false;
 
         this.options = options;
     }
@@ -250,10 +250,10 @@ public class Level {
         if (player != null) {
             //control player
             updateMovement();
-
-            //control screen position
-            updateCamera();
         }
+
+        //control screen position
+        updateCamera();
 
 		//update all entities
         synchronized (entityList) {
@@ -302,7 +302,7 @@ public class Level {
 	 */
     private void updateCamera() {
 		//if the mouse is outside the minimap, set the camera to locked (follow player)
-        if (!(Game.mouseX < minimapWidth && Game.mouseX > 0 && Game.mouseY > game.getHeight()-minimapHeight && Game.mouseY < getHeight()))
+        if (player != null && !(Game.mouseX < minimapWidth && Game.mouseX > 0 && Game.mouseY > game.getHeight()-minimapHeight && Game.mouseY < getHeight()))
             lockedCamera = true;
 		//if the camera is locked, move the camera to the player's location
         if (lockedCamera) {
@@ -310,7 +310,7 @@ public class Level {
             yView = (int) player.getY() - yViewSize / 2;
         }
 		//otherwise move the camera to the location on clicked on the minimap
-        else {
+        else if (Game.mousePressed){
             xView = (int) ((Game.mouseX / minimapWidth) * getWidth()) - xViewSize/2;
             yView = (int) (((minimapHeight-(game.getHeight()-Game.mouseY)) / minimapHeight) * getHeight()) - yViewSize/2;
         }
