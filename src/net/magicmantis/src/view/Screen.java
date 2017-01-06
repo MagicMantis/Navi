@@ -3,16 +3,19 @@ package net.magicmantis.src.view;
 import net.magicmantis.src.services.InputHandler;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
+import java.nio.IntBuffer;
 
-import static org.lwjgl.glfw.Callbacks.errorCallbackPrint;
+import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryUtil.NULL;
+import static org.lwjgl.system.MemoryStack.*;
+import static org.lwjgl.system.MemoryUtil.*;
 
 public class Screen {
 
@@ -37,25 +40,25 @@ public class Screen {
             loop();
 
             // Release window and window callbacks
+            glfwFreeCallbacks(window);
             glfwDestroyWindow(window);
             game.stop();
-            keyCallback.release();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             // Terminate GLFW and release the GLFWerrorfun
             glfwTerminate();
-            errorCallback.release();
+            glfwSetErrorCallback(null).free();
         }
     }
 
     private void init() {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
-        glfwSetErrorCallback(errorCallback = errorCallbackPrint(System.err));
+        GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW. Most GLFW functions will not work before doing this.
-        if ( glfwInit() != GL11.GL_TRUE )
+        if ( !glfwInit() )
             throw new IllegalStateException("Unable to initialize GLFW");
 
         // Configure our window
@@ -78,14 +81,24 @@ public class Screen {
         glfwSetKeyCallback(window, keyCallback = InputHandler.getKeyCallback());
         glfwSetMouseButtonCallback(window, mouseCallback = InputHandler.getMouseButtonCallback());
 
-        // Get the resolution of the primary monitor
-        ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        // Center our window
-        glfwSetWindowPos(
-                window,
-                (GLFWvidmode.width(vidmode) - WIDTH) / 2,
-                (GLFWvidmode.height(vidmode) - HEIGHT) / 2
-        );
+        // Get the thread stack and push a new frame
+        try ( MemoryStack stack = stackPush() ) {
+            IntBuffer pWidth = stack.mallocInt(1); // int*
+            IntBuffer pHeight = stack.mallocInt(1); // int*
+
+            // Get the window size passed to glfwCreateWindow
+            glfwGetWindowSize(window, pWidth, pHeight);
+
+            // Get the resolution of the primary monitor
+            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+
+            // Center the window
+            glfwSetWindowPos(
+                    window,
+                    (vidmode.width() - pWidth.get(0)) / 2,
+                    (vidmode.height() - pHeight.get(0)) / 2
+            );
+        } // the stack frame is popped automatically
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
@@ -103,7 +116,8 @@ public class Screen {
         // LWJGL detects the context that is current in the current thread,
         // creates the ContextCapabilities instance and makes the OpenGL
         // bindings available for use.
-        GLContext.createFromCurrent();
+        GL.createCapabilities();
+    //he
 
         // Set the clear color
         glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
@@ -116,7 +130,7 @@ public class Screen {
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
-        while ( glfwWindowShouldClose(window) == GL_FALSE ) {
+        while ( !glfwWindowShouldClose(window) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
             // draw quad
