@@ -239,7 +239,7 @@ public class Level {
 			}
 			
 		}
-        results.addScore(player, "Player1");
+        results.addScore(player, "Player-1");
 	}
 
 	/**

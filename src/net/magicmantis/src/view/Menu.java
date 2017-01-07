@@ -219,7 +219,6 @@ public class Menu {
             s = report.get(i);
             colorVals = Target.getColor(Integer.valueOf(s.split("\t")[0]));
             c = new Color((float)colorVals[0],(float)colorVals[1],(float)colorVals[2]);
-            s= s.replace("0","A");
             labelRow(s.substring(s.indexOf("\t")+1),70,game.getHeight()-100-(i*20),game.getWidth(),20,c);
         }
 

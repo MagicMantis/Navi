@@ -100,7 +100,7 @@ public class Results {
 
     private String generateName() {
         String name = "drone-";
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             int r = Game.rand.nextInt(36);
             char c = (char) (r + ((r < 10) ? 48 : 55));
             name += c;
