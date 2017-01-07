@@ -215,12 +215,15 @@ public class Menu {
         //score report
         labelRow("Unit\tKills\tDeaths\tDamage\tAccuracy\tScore",70,game.getHeight()-80,game.getWidth(), 20,Color.white);
         ArrayList<String> report = game.results.getScoreReport();
-        for (int i = 0; i < report.size(); i++) {
+        for (int i = 0; i < Math.min(report.size(), 20); i++) {
             s = report.get(i);
             colorVals = Target.getColor(Integer.valueOf(s.split("\t")[0]));
             c = new Color((float)colorVals[0],(float)colorVals[1],(float)colorVals[2]);
             labelRow(s.substring(s.indexOf("\t")+1),70,game.getHeight()-100-(i*20),game.getWidth(),20,c);
         }
+
+        //history
+        guiElements.add(new History(10,10, game.getWidth()-200, 200, game.results.getHistory()));
 
         //continue
         guiElements.add(new Button(game.getWidth()-150, 100,

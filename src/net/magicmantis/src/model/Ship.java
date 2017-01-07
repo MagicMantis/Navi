@@ -45,6 +45,9 @@ public class Ship extends Target {
         acceleration = 0.1;
         accuracy = 0;
         reset();
+
+        //track this entities score
+		level.results.addScore(this);
 	}
 
     /**

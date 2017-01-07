@@ -7,6 +7,7 @@ import net.magicmantis.src.model.Target;
 import net.magicmantis.src.server.OnlineGame;
 import net.magicmantis.src.services.ServerController;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -158,6 +159,9 @@ public class Game implements Runnable {
                 level.updateEntityList();
             }
             ticker = (ticker + 1) % 1000;
+            if (ticker % 60 == 0) {
+                level.results.store();
+            }
             if (ticker % 20 == 0) {
                 checkVictory();
             }
@@ -174,6 +178,7 @@ public class Game implements Runnable {
             if (i > 0) teamsRemaining++;
         }
         if (teamsRemaining <= 1 || Target.getTeamCount()[level.player.getTeam()-1] == 0) {
+            level.results.store();
             results = level.results;
             level = null;
             showMenu(2);

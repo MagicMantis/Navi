@@ -13,16 +13,19 @@ public class Results {
     private HashMap<Target, String> names;
     private HashMap<String, Score> scores;
 
+    private ArrayList<int[]> history;
+
     private boolean remainingTeams[] = {false,false,false,false,false,false,false,false};
     private int winner;
 
     public Results() {
-        names = new HashMap<Target, String>();
-        scores = new HashMap<String, Score>();
+        names = new HashMap<>();
+        scores = new HashMap<>();
+        history = new ArrayList<>();
     }
 
     public ArrayList<String> getScoreReport() {
-        ArrayList<String> report = new ArrayList<String>();
+        ArrayList<String> report = new ArrayList<>();
         for (Entry<String, Score> e : sortByValue(scores).entrySet()) {
             Score s = e.getValue();
             report.add(s.getTeam()+"\t"+e.getKey()+"\t"+s.getKills()+"\t"+s.getDeaths()+"\t"+s.getDamage()+"\t"+s.getAccuracy()+"%\t"+s.calculateScore());
@@ -51,6 +54,14 @@ public class Results {
         if (teams == 1) winner = win;
     }
 
+    public ArrayList<int[]> getHistory() {
+        return history;
+    }
+
+    public void store() {
+        this.history.add(Target.getTeamCount().clone());
+    }
+
     /**
      * This function adds a score entry for the supplied Target
      *
@@ -67,6 +78,11 @@ public class Results {
 
     public void addScore(Target e, String name) {
         if (!names.containsKey(e)) {
+            names.put(e, name);
+            scores.put(name, new Score(e));
+        }
+        else {
+            scores.remove(names.get(e));
             names.put(e, name);
             scores.put(name, new Score(e));
         }

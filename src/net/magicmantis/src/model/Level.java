@@ -66,6 +66,7 @@ public class Level {
         options.put("friendlyFire", false);
         options.put("allowTeams", true);
         options.put("spawnFactories", true);
+        options.put("spawnHeadquarters", true);
     }
 
 	/**
@@ -107,7 +108,8 @@ public class Level {
 		//determine amount of teams
         Headquarters blueHQ, greenHQ, redHQ, yellowHQ;
 		int teams = 0;
-        blueHQ = new Headquarters(width/8, height/8, 1, this);
+        if ((boolean) options.get("spawnHeadquarters"))
+            blueHQ = new Headquarters(width/8, height/8, 1, this);
 		if (blueDrones > 0) {
             teams++;
             if ((boolean) options.get("spawnFactories")) {
@@ -117,7 +119,8 @@ public class Level {
         }
 		if (greenDrones > 0) {
             teams++;
-            greenHQ = new Headquarters(7*width/8, height/8, 2, this);
+            if ((boolean) options.get("spawnHeadquarters"))
+                greenHQ = new Headquarters(7*width/8, height/8, 2, this);
             if ((boolean) options.get("spawnFactories")) {
                 new Factory(7 * width / 8, height / 4, 2, this);
                 new Factory(3 * width / 4, height / 8, 2, this);
@@ -125,7 +128,8 @@ public class Level {
         }
 		if (redDrones > 0) {
             teams++;
-            redHQ = new Headquarters(width/8, 7*height/8, 3, this);
+            if ((boolean) options.get("spawnHeadquarters"))
+                redHQ = new Headquarters(width/8, 7*height/8, 3, this);
             if ((boolean) options.get("spawnFactories")) {
                 new Factory(width / 8, 3 * height / 4, 3, this);
                 new Factory(width / 4, 7 * height / 8, 3, this);
@@ -133,7 +137,8 @@ public class Level {
         }
 		if (yellowDrones > 0) {
             teams++;
-            yellowHQ = new Headquarters(7*width/8, 7*height/8, 4, this);
+            if ((boolean) options.get("spawnHeadquarters"))
+                yellowHQ = new Headquarters(7*width/8, 7*height/8, 4, this);
             if ((boolean) options.get("spawnFactories")) {
                 new Factory(7 * width / 8, 3 * height / 4, 4, this);
                 new Factory(3 * width / 4, 7 * height / 8, 4, this);
@@ -240,6 +245,7 @@ public class Level {
 			
 		}
         results.addScore(player, "Player-1");
+		results.store();
 	}
 
 	/**
