@@ -25,6 +25,7 @@ public interface ServerController {
     public void startGame() throws IOException, FailedStartGameException;
     public void getLevel() throws IOException, GameNotFoundException;
     public void updateInput() throws IOException, GameNotFoundException;
+    public void checkGameStatus() throws IOException, GameNotFoundException;
 
     //synchronization
     public void lock();

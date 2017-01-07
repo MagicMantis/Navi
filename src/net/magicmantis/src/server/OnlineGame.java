@@ -172,6 +172,14 @@ public class OnlineGame {
     }
 
     public boolean startNoLoop() {
+        if (started) return true;
+        System.err.println("Should do this once");
+        try {
+            throw new Exception("Why");
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         level = new OnlineLevel(this, 2000, 2000, options);
         return (started = true);
     }

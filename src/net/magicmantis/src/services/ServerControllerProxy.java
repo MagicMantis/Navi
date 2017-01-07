@@ -13,6 +13,7 @@ import net.magicmantis.src.server.dataStructures.UserData;
 import net.magicmantis.src.view.Game;
 import net.magicmantis.src.view.HUD;
 
+import java.awt.*;
 import java.awt.image.DataBuffer;
 import java.io.*;
 import java.lang.reflect.Type;
@@ -76,12 +77,14 @@ public class ServerControllerProxy implements ServerController {
     @Override
     public OnlineGame getGameInfo() throws IOException, GameNotFoundException {
         //send game info request to server
+        System.out.println("getGameInfo()");
         out.writeInt(4);
         out.writeInt(game.getGameID());
 
         //receive response
         int gameID = in.readInt();
         if (gameID != game.getGameID()) throw new GameNotFoundException();
+
         int maxPlayers = in.readInt();
         int playerCount = in.readInt();
 
@@ -97,30 +100,13 @@ public class ServerControllerProxy implements ServerController {
 
         boolean started = in.readBoolean();
         boolean running = in.readBoolean();
-        boolean ended = in.readBoolean();
 
         OnlineGame info = new OnlineGame(gameID, maxPlayers);
         info.setPlayerCount(playerCount);
         info.setUserData(userData);
         info.setOptions(options);
         info.setRunning(running);
-        info.setEnded(ended);
 
-        if (ended) {
-            int winner = in.readInt();
-
-            String scoreReportString = in.readUTF();
-            mapType = new TypeToken<ArrayList<String>>(){}.getType();
-            ArrayList<String> scoreReport = gson.fromJson(scoreReportString, mapType);
-
-            String historyString = in.readUTF();
-            mapType = new TypeToken<ArrayList<int[]>>(){}.getType();
-            ArrayList<int[]> history = gson.fromJson(scoreReportString, mapType);
-
-            info.getResults().setWinner(winner);
-            info.getResults().setScoreReport(scoreReport);
-            info.getResults().setHistory(history);
-        }
         //start the game without starting the OnlineGame loop (since local copy is only used for information)
         if (started) info.startNoLoop();
         return info;
@@ -175,10 +161,30 @@ public class ServerControllerProxy implements ServerController {
     @Override
     public void getLevel() throws IOException {
         synchronized (this) {
-            //System.err.println("getLevel()");
+            System.err.println("getLevel()");
             //send get level request
             out.writeInt(6);
             out.writeInt(game.getGameID());
+
+            boolean ended = in.readBoolean();
+            if (ended) {
+                System.out.print("Game has ended, getting results...");
+                int winner = in.readInt();
+
+                String scoreReportString = in.readUTF();
+                Type mapType = new TypeToken<ArrayList<String>>(){}.getType();
+                ArrayList<String> scoreReport = gson.fromJson(scoreReportString, mapType);
+
+                String historyString = in.readUTF();
+                mapType = new TypeToken<ArrayList<int[]>>(){}.getType();
+                ArrayList<int[]> history = gson.fromJson(scoreReportString, mapType);
+
+                game.getOnlineGame().getResults().setWinner(winner);
+                game.getOnlineGame().getResults().setScoreReport(scoreReport);
+                game.getOnlineGame().getResults().setHistory(history);
+                game.getOnlineGame().setEnded(true);
+                return;
+            }
 
             //receive response
             String levelDataString = in.readUTF();
@@ -208,6 +214,17 @@ public class ServerControllerProxy implements ServerController {
             input += "d:"+Game.dkey+";";
             out.writeUTF(input);
         }
+    }
+
+    @Override
+    public void checkGameStatus() throws IOException {
+        System.out.println("getGameInfo()");
+        out.writeInt(10);
+        out.writeInt(game.getGameID());
+
+        boolean ended = in.readBoolean();
+
+
     }
 
     //lock server request commands for other threads

@@ -10,6 +10,7 @@ import net.magicmantis.src.server.User;
 import net.magicmantis.src.server.dataStructures.LevelData;
 import net.magicmantis.src.services.ServerController;
 import net.magicmantis.src.services.Utility;
+import org.lwjgl.system.CallbackI;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -86,12 +87,6 @@ public class ServerControllerServer implements ServerController {
         user.getOutput().writeUTF(gson.toJson(game.getOptions()));
         user.getOutput().writeBoolean(game.isStarted());
         user.getOutput().writeBoolean(game.isRunning());
-        user.getOutput().writeBoolean(game.isEnded());
-        if (game.isStarted() && !game.isRunning()) {
-            user.getOutput().writeInt(game.getResults().getWinner());
-            user.getOutput().writeUTF(gson.toJson(game.getResults().getScoreReport()));
-            user.getOutput().writeUTF(gson.toJson(game.getResults().getHistory()));
-        }
         return null;
     }
 
@@ -109,7 +104,7 @@ public class ServerControllerServer implements ServerController {
         if (optionString.equals("allowTeams")) {
             user.getGame().getOptions().put("allowTeams", valueObject);
         }
-        if (optionString.equals("spawnFactories")) {
+        else if (optionString.equals("spawnFactories")) {
             user.getGame().getOptions().put("spawnFactories", valueObject);
         }
         else {
@@ -151,6 +146,13 @@ public class ServerControllerServer implements ServerController {
             int gameID = user.getInput().readInt();
             if (gameID != user.getGame().getID()) throw new GameNotFoundException();
 
+            user.getOutput().writeBoolean(user.getGame().isEnded());
+            if (user.getGame().isEnded()) {
+                user.getOutput().writeInt(user.getGame().getResults().getWinner());
+                user.getOutput().writeUTF(gson.toJson(user.getGame().getResults().getScoreReport()));
+                user.getOutput().writeUTF(gson.toJson(user.getGame().getResults().getHistory()));
+            }
+
             //send level
             LevelData levelData = new LevelData(user.getGame().getLevel(), user.getID());
             user.getOutput().writeUTF(Utility.getClassGson().toJson(levelData));
@@ -165,6 +167,19 @@ public class ServerControllerServer implements ServerController {
             user.userInput.put(input.substring(0, input.indexOf(':')),
                     Boolean.valueOf(input.substring(input.indexOf(':') + 1, input.indexOf(';'))));
             input = input.substring(input.indexOf(';')+1);
+        }
+    }
+
+    @Override
+    public void checkGameStatus() throws IOException, GameNotFoundException {
+        int gameID = user.getInput().readInt();
+        OnlineGame game = null;
+        for (OnlineGame g : games) {
+            if (g.getID() == gameID) game = g;
+        }
+        if (game == null) throw new GameNotFoundException();
+        user.getOutput().writeBoolean(game.isEnded());
+        if (game.isEnded()) {
         }
     }
 
