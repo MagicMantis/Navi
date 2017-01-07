@@ -146,6 +146,7 @@ public abstract class Target extends Entity {
      * @param yView - The y offset due to camera position.
      */
     public void draw(int xView, int yView) {
+        super.draw(xView, yView);
         if (drawHealthBar) drawHealthBar(xView, yView);
     }
 

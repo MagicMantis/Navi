@@ -29,7 +29,7 @@ public class Screen {
     private long window;
     private Game game;
 
-    private int WIDTH, HEIGHT;
+    public static int WIDTH, HEIGHT;
 
     public void run(int w, int h) {
         WIDTH = w;

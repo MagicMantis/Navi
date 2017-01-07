@@ -38,8 +38,11 @@ public class Bullet extends Projectile {
      * @param xView - offset from camera view position
      * @param yView - offset from camera view position
      */
+    @Override
 	public void draw(int xView, int yView)
 	{
+        super.draw(xView, yView);
+
         //color
         double col[] = getColor();
         GL11.glColor3d(col[0],col[1],col[2]);

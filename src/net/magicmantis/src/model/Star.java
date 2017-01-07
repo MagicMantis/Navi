@@ -45,6 +45,7 @@ public class Star {
      */
     public void draw(int xView, int yView) {
         int size = 1+type;
+        if (x-xView+size < 0 || x-xView > Screen.WIDTH || y-yView+size < 0 || y-yView > Screen.HEIGHT) return;
         GL11.glColor3f(1f,1f,1f);
         GL11.glBegin(GL11.GL_POLYGON);
         GL11.glVertex2f(x - xView+size, y - yView);
