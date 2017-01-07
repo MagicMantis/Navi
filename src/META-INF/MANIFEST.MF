@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
-Class-Path: lwjgl-glfw.jar lwjgl-opengl.jar gson-2.7.jar lwjgl.jar
-Main-Class: net.magicmantis.src.Space
+Class-Path: lwjgl.jar lwjgl-glfw.jar lwjgl-opengl.jar gson-2.7.jar
+Main-Class: net.magicmantis.src.server.Server
 

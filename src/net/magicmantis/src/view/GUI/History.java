@@ -15,12 +15,6 @@ public class History extends GUIElement {
     public History(int x, int y, int width, int height, ArrayList<int[]> history) {
         super(x,y,width,height);
         this.history = history;
-        for (int[] i : history) {
-            for (int j : i) {
-                System.out.print(j+" ");
-            }
-            System.out.println();
-        }
     }
 
     @Override

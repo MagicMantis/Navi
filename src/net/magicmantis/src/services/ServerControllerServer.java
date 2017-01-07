@@ -26,6 +26,8 @@ public class ServerControllerServer implements ServerController {
     private User user;
     private int gameIDs;
 
+    private static final Gson gson = new Gson();
+
     public ServerControllerServer(ArrayList<OnlineGame> games, User user) {
         this.games = games;
         this.user = user;
@@ -80,9 +82,16 @@ public class ServerControllerServer implements ServerController {
         user.getOutput().writeInt(game.getID());
         user.getOutput().writeInt(game.getMaxPlayers());
         user.getOutput().writeInt(game.getPlayerCount());
-        user.getOutput().writeUTF(new Gson().toJson(game.getUserData()));
-        user.getOutput().writeUTF(new Gson().toJson(game.getOptions()));
+        user.getOutput().writeUTF(gson.toJson(game.getUserData()));
+        user.getOutput().writeUTF(gson.toJson(game.getOptions()));
         user.getOutput().writeBoolean(game.isStarted());
+        user.getOutput().writeBoolean(game.isRunning());
+        user.getOutput().writeBoolean(game.isEnded());
+        if (game.isStarted() && !game.isRunning()) {
+            user.getOutput().writeInt(game.getResults().getWinner());
+            user.getOutput().writeUTF(gson.toJson(game.getResults().getScoreReport()));
+            user.getOutput().writeUTF(gson.toJson(game.getResults().getHistory()));
+        }
         return null;
     }
 

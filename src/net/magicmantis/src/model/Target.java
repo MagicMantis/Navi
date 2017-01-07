@@ -95,6 +95,7 @@ public abstract class Target extends Entity {
     }
 
     public static void addTeamCount(int team) {
+        if (team == 0) return;
         teamCount[team-1]++;
     }
 

@@ -39,6 +39,7 @@ public class Level {
         this.height = height;
 
         this.entityList = Collections.synchronizedList(new ArrayList<Entity>());
+        this.results = new Results();
 
         //only do the rest for offline games
         if (game == null) return;
@@ -54,7 +55,6 @@ public class Level {
         lockedCamera = true;
 
         this.options = options;
-        this.results = new Results();
     }
 
     public Level(Game game, int width, int height) {
@@ -81,7 +81,7 @@ public class Level {
 	/**
 	 * Generate the stars and environment
 	 */
-	private void generateSpace()
+	protected void generateSpace()
 	{
 		Star.starList.clear();
         for(int i = 0; i < width; i++)

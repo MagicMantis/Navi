@@ -1,5 +1,6 @@
 package net.magicmantis.src.server.dataStructures;
 
+import net.magicmantis.src.model.Results;
 import net.magicmantis.src.server.OnlineLevel;
 import net.magicmantis.src.server.dataStructures.EntityData;
 

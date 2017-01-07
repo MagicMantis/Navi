@@ -28,6 +28,8 @@ import java.util.Map;
 
 public class ServerControllerProxy implements ServerController {
 
+    private static final Gson gson = new Gson();
+
     private boolean locked;
     private Game game;
 
@@ -85,7 +87,6 @@ public class ServerControllerProxy implements ServerController {
 
         //userdata
         String userDataString = in.readUTF();
-        Gson gson = new Gson();
         Type mapType = new TypeToken<Map<Integer, UserData>>(){}.getType();
         HashMap<Integer,UserData> userData = gson.fromJson(userDataString, mapType);
 
@@ -95,11 +96,31 @@ public class ServerControllerProxy implements ServerController {
         Map<String,Object> options = gson.fromJson(optionsString, mapType);
 
         boolean started = in.readBoolean();
+        boolean running = in.readBoolean();
+        boolean ended = in.readBoolean();
 
         OnlineGame info = new OnlineGame(gameID, maxPlayers);
         info.setPlayerCount(playerCount);
         info.setUserData(userData);
         info.setOptions(options);
+        info.setRunning(running);
+        info.setEnded(ended);
+
+        if (ended) {
+            int winner = in.readInt();
+
+            String scoreReportString = in.readUTF();
+            mapType = new TypeToken<ArrayList<String>>(){}.getType();
+            ArrayList<String> scoreReport = gson.fromJson(scoreReportString, mapType);
+
+            String historyString = in.readUTF();
+            mapType = new TypeToken<ArrayList<int[]>>(){}.getType();
+            ArrayList<int[]> history = gson.fromJson(scoreReportString, mapType);
+
+            info.getResults().setWinner(winner);
+            info.getResults().setScoreReport(scoreReport);
+            info.getResults().setHistory(history);
+        }
         //start the game without starting the OnlineGame loop (since local copy is only used for information)
         if (started) info.startNoLoop();
         return info;

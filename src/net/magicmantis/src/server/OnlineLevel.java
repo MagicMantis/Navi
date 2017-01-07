@@ -41,7 +41,8 @@ public class OnlineLevel extends Level {
     /**
      * Generate environment, synced across all clients.
      */
-    private void generateSpace()
+    @Override
+    protected void generateSpace()
     {
         for(int i = 0; i < getWidth(); i++)
         {

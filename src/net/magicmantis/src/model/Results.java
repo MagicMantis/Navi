@@ -13,6 +13,7 @@ public class Results {
     private HashMap<Target, String> names;
     private HashMap<String, Score> scores;
 
+    private ArrayList<String> scoreReport;
     private ArrayList<int[]> history;
 
     private boolean remainingTeams[] = {false,false,false,false,false,false,false,false};
@@ -24,7 +25,7 @@ public class Results {
         history = new ArrayList<>();
     }
 
-    public ArrayList<String> getScoreReport() {
+    private ArrayList<String> evalScoreReport() {
         ArrayList<String> report = new ArrayList<>();
         for (Entry<String, Score> e : sortByValue(scores).entrySet()) {
             Score s = e.getValue();
@@ -48,10 +49,13 @@ public class Results {
         for (int i = 0; i < remainingTeams.length; i++) {
             if (remainingTeams[i] == true) {
                 teams++;
-                win = i;
+                win = i+1;
             }
         }
-        if (teams == 1) winner = win;
+        if (teams == 1) {
+            evalScoreReport();
+            winner = win;
+        }
     }
 
     public ArrayList<int[]> getHistory() {
@@ -112,6 +116,22 @@ public class Results {
     public void addShot(Target e) {
         if (!names.containsKey(e)) addScore(e);
         scores.get(names.get(e)).addShot();
+    }
+
+    public ArrayList<String> getScoreReport() {
+        return scoreReport;
+    }
+
+    public void setScoreReport(ArrayList<String> scoreReport) {
+        this.scoreReport = scoreReport;
+    }
+
+    public void setHistory(ArrayList<int[]> history) {
+        this.history = history;
+    }
+
+    public void setWinner(int winner) {
+        this.winner = winner;
     }
 
     private String generateName() {

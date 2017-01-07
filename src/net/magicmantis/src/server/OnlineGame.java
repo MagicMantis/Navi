@@ -1,7 +1,10 @@
 package net.magicmantis.src.server;
 
+import net.magicmantis.src.model.Results;
+import net.magicmantis.src.model.Target;
 import net.magicmantis.src.server.dataStructures.UserData;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,6 +27,10 @@ public class OnlineGame {
     private OnlineLevel level; //the current level for this online game
     private boolean started; //whether or not the game has been started
     private boolean running; //whether or not the game is currently running (can change between running and stopped);
+    private boolean ended;
+
+    private Results results;
+    private int ticker;
 
     /**
      * Create a new Online Game for players to join.
@@ -36,6 +43,8 @@ public class OnlineGame {
         this.id = id;
         this.started = false;
         this.running = false;
+        this.ended = false;
+        this.ticker = 0;
 
         players = new ArrayList<User>();
         userData = new HashMap<Integer, UserData>();
@@ -111,6 +120,8 @@ public class OnlineGame {
         return hostID;
     }
 
+    public Results getResults() { return results; }
+
     public void setPlayerCount(int playerCount) {
         this.playerCount = playerCount;
     }
@@ -170,6 +181,26 @@ public class OnlineGame {
         players.forEach(this::updateMovement);
         level.update();
         level.updateEntityList();
+
+        //periodic checks
+        ticker = (ticker + 1) % 1000;
+        if (ticker % 60 == 0) {
+            level.results.store();
+        }
+        if (ticker % 20 == 0) {
+            checkVictory();
+        }
+    }
+
+    private void checkVictory() {
+        int teamsRemaining = 0;
+        for (int i : Target.getTeamCount()) {
+            if (i > 0) teamsRemaining++;
+        }
+        if (teamsRemaining <= 1) {
+            level.results.store();
+            results = level.results;
+        }
     }
 
     private void updateMovement(User u) {
@@ -189,6 +220,7 @@ public class OnlineGame {
 
     public void endGame() {
         System.out.println("Ended Game with no Connected Players.");
+        ended = true;
         running = false;
     }
 
@@ -204,6 +236,8 @@ public class OnlineGame {
         return running;
     }
 
+    public boolean isEnded() { return ended; }
+
     public OnlineLevel getLevel() {
         return level;
     }
@@ -214,5 +248,13 @@ public class OnlineGame {
 
     public void setOptions(Map<String,Object> options) {
         this.options = options;
+    }
+
+    public void setEnded(boolean ended) {
+        this.ended = ended;
+    }
+
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 }

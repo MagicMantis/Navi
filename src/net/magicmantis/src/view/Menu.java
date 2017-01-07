@@ -196,6 +196,11 @@ public class Menu {
      */
     public void resultsScreen() {
         //victory
+        try {
+            throw new Exception("Why");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String s;
         double[] colorVals = Target.getColor(game.results.getWinner());
         Color c = new Color((float)colorVals[0],(float)colorVals[1],(float)colorVals[2]);

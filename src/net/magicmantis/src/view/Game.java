@@ -47,7 +47,7 @@ public class Game implements Runnable {
 	public static boolean dkey, skey;
 	
 	public boolean paused;
-	private int ticker = 0;
+	private int ticker;
 
     /**
      * Initialize a game.
@@ -74,6 +74,7 @@ public class Game implements Runnable {
 		spacekey = false;
 		dkey = false;
 		skey = false;
+		ticker = 0;
 	}
 
     //
@@ -143,6 +144,12 @@ public class Game implements Runnable {
 	    if (!paused) {
             if (onlineGame != null) {
                 try {
+                    onlineGame = serverProxy.getGameInfo();
+                    if (onlineGame.isEnded()) {
+                        results = onlineGame.getResults();
+                        level = null;
+                        showMenu(2);
+                    }
                     serverProxy.getLevel();
                     level.updateOnline();
                     level.updateEntityList();
@@ -157,13 +164,15 @@ public class Game implements Runnable {
             {
                 level.update();
                 level.updateEntityList();
-            }
-            ticker = (ticker + 1) % 1000;
-            if (ticker % 60 == 0) {
-                level.results.store();
-            }
-            if (ticker % 20 == 0) {
-                checkVictory();
+
+                //periodic checks
+                ticker = (ticker + 1) % 1000;
+                if (ticker % 60 == 0) {
+                    level.results.store();
+                }
+                if (ticker % 20 == 0) {
+                    checkVictory();
+                }
             }
         }
 		else
