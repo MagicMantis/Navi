@@ -117,7 +117,6 @@ public class Screen {
         // creates the ContextCapabilities instance and makes the OpenGL
         // bindings available for use.
         GL.createCapabilities();
-    //he
 
         // Set the clear color
         glClearColor(1.0f, 0.0f, 0.0f, 0.0f);

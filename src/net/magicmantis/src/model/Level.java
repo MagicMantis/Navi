@@ -70,6 +70,7 @@ public class Level {
 	 * Generate the level, call private methods that generate the individual parts
 	 */
     public void generate() {
+        Target.resetTeamCount();
         generateSpace();
         generateUnits();
     }
@@ -100,6 +101,12 @@ public class Level {
 		int greenDrones = Game.rand.nextInt(10);
 		int redDrones = Game.rand.nextInt(10);
 		int yellowDrones = Game.rand.nextInt(10);
+
+		options.put("spawnFactories", false);
+        blueDrones = 1;
+		redDrones = 10;
+        greenDrones = 0;
+        yellowDrones = 0;
 		
 		//determine amount of teams
         Headquarters blueHQ, greenHQ, redHQ, yellowHQ;

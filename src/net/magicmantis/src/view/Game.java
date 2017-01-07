@@ -2,6 +2,7 @@ package net.magicmantis.src.view;
 
 import net.magicmantis.src.exceptions.GameNotFoundException;
 import net.magicmantis.src.model.Level;
+import net.magicmantis.src.model.Target;
 import net.magicmantis.src.server.OnlineGame;
 import net.magicmantis.src.services.ServerController;
 import org.lwjgl.glfw.GLFW;
@@ -43,6 +44,7 @@ public class Game implements Runnable {
 	public static boolean dkey, skey;
 	
 	public boolean paused;
+	private int ticker = 0;
 
     /**
      * Initialize a game.
@@ -135,28 +137,46 @@ public class Game implements Runnable {
      */
 	private void tick() 
 	{
-        if (!paused && onlineGame != null) {
-            try {
-                serverProxy.getLevel();
-                level.updateOnline();
+	    if (!paused) {
+            if (onlineGame != null) {
+                try {
+                    serverProxy.getLevel();
+                    level.updateOnline();
+                    level.updateEntityList();
+                    serverProxy.updateInput();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (GameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                level.update();
                 level.updateEntityList();
-                serverProxy.updateInput();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (GameNotFoundException e) {
-                e.printStackTrace();
+            }
+            ticker = (ticker + 1) % 1000;
+            if (ticker % 20 == 0) {
+                checkVictory();
             }
         }
-		else if (!paused)
-		{
-			level.update();
-            level.updateEntityList();
-		}
 		else
 		{
 			menu.update();
 		}
 	}
+
+    private void checkVictory() {
+	    int teamsRemaining = 0;
+        for (int i : Target.getTeamCount()) {
+            if (i > 0) teamsRemaining++;
+        }
+        System.out.println();
+        if (teamsRemaining <= 1 || Target.getTeamCount()[level.player.getTeam()-1] == 0) {
+            level = null;
+            showMenu(2);
+        }
+    }
 
     /**
      * Draw the active component, either a menu or level and hud.

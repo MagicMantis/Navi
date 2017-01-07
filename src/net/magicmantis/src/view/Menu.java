@@ -45,129 +45,160 @@ public class Menu {
         guiElements = new ArrayList<>();
         serverActionQueue = new ArrayList<>();
 
+        //main menu
         if (menu == 0) {
-            //new game button
-            guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2+120,
-                    120, 60, "New Game", () -> {
-                        int size = Game.rand.nextInt(2)*1000;
-                        game.newLevel(2000+size, 2000+size);
-                        game.paused = false;
-                        return null;
-                    }));
-            //continue button
-            guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2+40,
-                    120, 60, "Continue", () -> {
-                        if (game.level != null)
-                            game.paused = false;
-                        return null;
-                    }));
-            //help button
-            guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2-40,
-                    120, 60, "Multiplayer", () -> {
-                        try {
-                            game.setServerProxy(new ServerControllerProxy(game));
-                            game.getServerProxy().matchMake();
-                            game.setOnlineGame(game.getServerProxy().getGameInfo());
-                            game.getServerProxy().unlock();
-                        } catch (ConnectException e) {
-                            System.err.println("Could not connect to server.");
-                            return null;
-                        } catch (IOException | GameNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                game.showMenu(1);
-                        return null;
-                    }));
-            //quit button
-            guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2-120,
-                    120, 60, "Quit", () -> {
-                        System.exit(0);
-                        return null;
-                    }));
+            mainMenu();
         }
         //multiplayer menu
         else if (menu == 1) {
-            //start game button
-            guiElements.add(new Button(game.getWidth()-150, 100,
-                    120, 60, "Start", () -> {
-                        serverActionQueue.add(() -> {
-                            try {
-                                game.getServerProxy().startGame();
-                            } catch (FailedStartGameException | IOException e) {
-                                e.printStackTrace();
-                            }
-                            return null;
-                        });
-                        return null;
-                    }));
-            //cancel button
-            guiElements.add(new Button(game.getWidth()-300, 100,
-                    120, 60, "Cancel", () -> {
-                        serverActionQueue.add(() -> {
-                            try {
-                                game.getServerProxy().disconnect();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            game.showMenu(0);
-                            return null;
-                        });
-                        return null;
-                    }));
-            //allow team switch
-            allowTeamsSwitch = new Switch(game.getWidth() - 400, game.getHeight() - 100, 100, 40, "Teams", false,() -> {
-                serverActionQueue.add(() -> {
-                    try {
-                        game.getServerProxy().changeOption("allowTeams", true);
-                    } catch (UnknownOptionException | AccessDeniedException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                });
-                return null;
-            }, () -> {
-                serverActionQueue.add(() -> {
-                    try {
-                        game.getServerProxy().changeOption("allowTeams", false);
-                    } catch (UnknownOptionException | AccessDeniedException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                });
-                return null;
-            });
-            guiElements.add(allowTeamsSwitch);
-
-            //spawn factory switch
-            spawnFactories = new Switch(game.getWidth() - 400, game.getHeight() - 200, 100, 40, "Factories", false,() -> {
-                serverActionQueue.add(() -> {
-                    try {
-                        game.getServerProxy().changeOption("spawnFactories", true);
-                    } catch (UnknownOptionException | AccessDeniedException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                });
-                return null;
-            }, () -> {
-                serverActionQueue.add(() -> {
-                    try {
-                        game.getServerProxy().changeOption("spawnFactories", false);
-                    } catch (UnknownOptionException | AccessDeniedException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                });
-                return null;
-            });
-            guiElements.add(spawnFactories);
-
-            //generate team selectors
-            for (int i = 0; i < game.getOnlineGame().getMaxPlayers(); i++) {
-                guiElements.add(new TeamSelector(50, game.getHeight() - 100 - (i * 80), 50, 50, i, game, serverActionQueue));
-            }
+            multiplayerMenu();
+        }
+        //results screen
+        else if (menu == 2) {
+            resultsScreen();
         }
 	}
+
+    /**
+     * Shows the main menu of the game
+     */
+	private void mainMenu() {
+        //new game button
+        guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2+120,
+                120, 60, "New Game", () -> {
+            int size = Game.rand.nextInt(2)*1000;
+            game.newLevel(2000+size, 2000+size);
+            game.paused = false;
+            return null;
+        }));
+        //continue button
+        guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2+40,
+                120, 60, "Continue", () -> {
+            if (game.level != null)
+                game.paused = false;
+            return null;
+        }));
+        //multiplayer button
+        guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2-40,
+                120, 60, "Multiplayer", () -> {
+            try {
+                game.setServerProxy(new ServerControllerProxy(game));
+                game.getServerProxy().matchMake();
+                game.setOnlineGame(game.getServerProxy().getGameInfo());
+                game.getServerProxy().unlock();
+            } catch (ConnectException e) {
+                System.err.println("Could not connect to server.");
+                return null;
+            } catch (IOException | GameNotFoundException e) {
+                e.printStackTrace();
+            }
+            game.showMenu(1);
+            return null;
+        }));
+        //quit button
+        guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2-120,
+                120, 60, "Quit", () -> {
+            System.exit(0);
+            return null;
+        }));
+    }
+
+    /**
+     * Menu shown while in a multiplayer lobby before the game starts
+     */
+    public void multiplayerMenu() {
+        //start game button
+        guiElements.add(new Button(game.getWidth()-150, 100,
+                120, 60, "Start", () -> {
+            serverActionQueue.add(() -> {
+                try {
+                    game.getServerProxy().startGame();
+                } catch (FailedStartGameException | IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+            return null;
+        }));
+        //cancel button
+        guiElements.add(new Button(game.getWidth()-300, 100,
+                120, 60, "Cancel", () -> {
+            serverActionQueue.add(() -> {
+                try {
+                    game.getServerProxy().disconnect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                game.showMenu(0);
+                return null;
+            });
+            return null;
+        }));
+        //allow team switch
+        allowTeamsSwitch = new Switch(game.getWidth() - 400, game.getHeight() - 100, 100, 40, "Teams", false,() -> {
+            serverActionQueue.add(() -> {
+                try {
+                    game.getServerProxy().changeOption("allowTeams", true);
+                } catch (UnknownOptionException | AccessDeniedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+            return null;
+        }, () -> {
+            serverActionQueue.add(() -> {
+                try {
+                    game.getServerProxy().changeOption("allowTeams", false);
+                } catch (UnknownOptionException | AccessDeniedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+            return null;
+        });
+        guiElements.add(allowTeamsSwitch);
+
+        //spawn factory switch
+        spawnFactories = new Switch(game.getWidth() - 400, game.getHeight() - 200, 100, 40, "Factories", false,() -> {
+            serverActionQueue.add(() -> {
+                try {
+                    game.getServerProxy().changeOption("spawnFactories", true);
+                } catch (UnknownOptionException | AccessDeniedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+            return null;
+        }, () -> {
+            serverActionQueue.add(() -> {
+                try {
+                    game.getServerProxy().changeOption("spawnFactories", false);
+                } catch (UnknownOptionException | AccessDeniedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            });
+            return null;
+        });
+        guiElements.add(spawnFactories);
+
+        //generate team selectors
+        for (int i = 0; i < game.getOnlineGame().getMaxPlayers(); i++) {
+            guiElements.add(new TeamSelector(50, game.getHeight() - 100 - (i * 80), 50, 50, i, game, serverActionQueue));
+        }
+    }
+
+    /**
+     * Screen shown after completion of a game
+     */
+    public void resultsScreen() {
+        //continue
+        guiElements.add(new Button(game.getWidth()-150, 100,
+                120, 60, "Continue", () -> {
+            game.showMenu(0);
+            return null;
+        }));
+    }
 
     /**
      * Draw the current menu

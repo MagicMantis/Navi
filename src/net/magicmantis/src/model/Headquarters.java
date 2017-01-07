@@ -2,6 +2,7 @@ package net.magicmantis.src.model;
 
 import net.magicmantis.src.server.dataStructures.EntityData;
 
+import javax.swing.text.html.HTML;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -69,6 +70,7 @@ public class Headquarters extends Spawner {
         Player spawnPlayer = respawnQueue.get(0);
         spawnPlayer.reset();
         level.addEntity(spawnPlayer);
+        Target.addTeamCount(spawnPlayer.getTeam());
         respawnQueue.remove(0);
     }
 }

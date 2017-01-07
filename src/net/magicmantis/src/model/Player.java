@@ -68,7 +68,7 @@ public class Player extends Ship {
 
     @Override
     public void destroy() {
-        level.removeEntity(this);
+        super.destroy();
         for (Entity e : level.getEntityList()) {
             if (e instanceof Headquarters) {
                 Headquarters hq = (Headquarters) e;
