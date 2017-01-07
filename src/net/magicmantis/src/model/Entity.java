@@ -1,6 +1,7 @@
 package net.magicmantis.src.model;
 
 import net.magicmantis.src.server.dataStructures.EntityData;
+import net.magicmantis.src.view.Screen;
 
 import java.awt.Rectangle;
 
@@ -106,7 +107,9 @@ public abstract class Entity {
 	
 	public abstract void update();
 
-	public abstract void draw(int xView, int yView);
+	public void draw(int xView, int yView) {
+		if (x-xView+width < 0 || x-xView > Screen.WIDTH || y-yView+height < 0 || y-yView > Screen.HEIGHT) return;
+	}
 
     public abstract boolean isShip();
 
