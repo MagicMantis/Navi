@@ -104,6 +104,11 @@ public class Level {
 		int greenDrones = Game.rand.nextInt(10);
 		int redDrones = Game.rand.nextInt(10);
 		int yellowDrones = Game.rand.nextInt(10);
+
+		yellowDrones = 0;
+		redDrones = 0;
+        options.put("spawnFactories", false);
+        options.put("spawnHeadquarters", false);
 		
 		//determine amount of teams
         Headquarters blueHQ, greenHQ, redHQ, yellowHQ;

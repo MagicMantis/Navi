@@ -25,13 +25,13 @@ public class Results {
         history = new ArrayList<>();
     }
 
-    private ArrayList<String> evalScoreReport() {
+    public void evalScoreReport() {
         ArrayList<String> report = new ArrayList<>();
         for (Entry<String, Score> e : sortByValue(scores).entrySet()) {
             Score s = e.getValue();
             report.add(s.getTeam()+"\t"+e.getKey()+"\t"+s.getKills()+"\t"+s.getDeaths()+"\t"+s.getDamage()+"\t"+s.getAccuracy()+"%\t"+s.calculateScore());
         }
-        return report;
+        scoreReport = report;
     }
 
     public int getWinner() {

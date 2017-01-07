@@ -182,6 +182,7 @@ public class Game implements Runnable {
         }
         if (teamsRemaining <= 1 || Target.getTeamCount()[level.player.getTeam()-1] == 0) {
             level.results.store();
+            level.results.evalScoreReport();
             results = level.results;
             level = null;
             showMenu(2);
