@@ -167,6 +167,26 @@ public abstract class Target extends Entity {
         }
     }
 
+    /**
+     * Static version for other classes to use to get team colors
+     *
+     * @param team - which team's color to return
+     * @return Array of doubles representing the red, green, and blue values to make a color.
+     */
+    public static double[] getColor(int team) {
+        switch (team) {
+            case 1: return BLUE_TEAM_COLOR;
+            case 2: return GREEN_TEAM_COLOR;
+            case 3: return RED_TEAM_COLOR;
+            case 4: return YELLOW_TEAM_COLOR;
+            case 5: return PURPLE_TEAM_COLOR;
+            case 6: return ORANGE_TEAM_COLOR;
+            case 7: return LIME_TEAM_COLOR;
+            case 8: return PINK_TEAM_COLOR;
+            default: return BLUE_TEAM_COLOR;
+        }
+    }
+
     @Override
     public void fromData(EntityData entityData) {
         super.fromData(entityData);

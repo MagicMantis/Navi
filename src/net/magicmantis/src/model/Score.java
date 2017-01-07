@@ -6,9 +6,11 @@ package net.magicmantis.src.model;
 
 public class Score {
 
+    private int team;
     private int kills, deaths, damage, hits, shots;
 
-    public Score() {
+    public Score(Target t) {
+        team = t.getTeam();
         kills = 0;
         deaths = 0;
         damage = 0;
@@ -65,5 +67,7 @@ public class Score {
     public int getAccuracy() {
         return (int) (((double)hits/(double)shots) * 100);
     }
+
+    public int getTeam() { return team; }
 
 }

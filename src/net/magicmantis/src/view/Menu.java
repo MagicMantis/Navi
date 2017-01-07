@@ -5,15 +5,16 @@ import net.magicmantis.src.exceptions.FailedStartGameException;
 import net.magicmantis.src.exceptions.GameNotFoundException;
 import net.magicmantis.src.exceptions.UnknownOptionException;
 import net.magicmantis.src.model.Ship;
+import net.magicmantis.src.model.Target;
 import net.magicmantis.src.server.dataStructures.UserData;
 import net.magicmantis.src.services.ServerControllerProxy;
 import net.magicmantis.src.services.TextEngine;
+import net.magicmantis.src.view.GUI.*;
 import net.magicmantis.src.view.GUI.Button;
-import net.magicmantis.src.view.GUI.GUIElement;
-import net.magicmantis.src.view.GUI.Switch;
-import net.magicmantis.src.view.GUI.TeamSelector;
+import net.magicmantis.src.view.GUI.Label;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.util.ArrayList;
@@ -63,6 +64,8 @@ public class Menu {
      * Shows the main menu of the game
      */
 	private void mainMenu() {
+	    //title
+        guiElements.add(new Label(game.getWidth()/2, game.getHeight()-100, 400, 100, "Project Navi", Color.white));
         //new game button
         guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2+120,
                 120, 60, "New Game", () -> {
@@ -192,12 +195,49 @@ public class Menu {
      * Screen shown after completion of a game
      */
     public void resultsScreen() {
+        //victory
+        String s;
+        double[] colorVals = Target.getColor(game.results.getWinner());
+        Color c = new Color((float)colorVals[0],(float)colorVals[1],(float)colorVals[2]);
+        switch (game.results.getWinner()) {
+            case 1: s = "Blue";
+            case 2: s = "Green";
+            case 3: s = "Red";
+            case 4: s = "Yellow";
+            case 5: s = "Purple";
+            case 6: s = "Orange";
+            case 7: s = "Lime";
+            case 8: s = "Pink";
+            default: s = "Blue";
+        }
+        guiElements.add(new Label(game.getWidth()/2, game.getHeight()-30, 200, 100, s+" Team Wins", c));
+
+        //score report
+        labelRow("Unit\tKills\tDeaths\tDamage\tAccuracy\tScore",70,game.getHeight()-80,game.getWidth(), 20,Color.white);
+        ArrayList<String> report = game.results.getScoreReport();
+        for (int i = 0; i < report.size(); i++) {
+            s = report.get(i);
+            colorVals = Target.getColor(Integer.valueOf(s.split("\t")[0]));
+            c = new Color((float)colorVals[0],(float)colorVals[1],(float)colorVals[2]);
+            s= s.replace("0","A");
+            labelRow(s.substring(s.indexOf("\t")+1),70,game.getHeight()-100-(i*20),game.getWidth(),20,c);
+        }
+
         //continue
         guiElements.add(new Button(game.getWidth()-150, 100,
                 120, 60, "Continue", () -> {
             game.showMenu(0);
             return null;
         }));
+    }
+
+    private void labelRow(String s, int x, int y, int width, int height, Color c) {
+        String items[] = s.split("\t");
+        int w1 = width/items.length;
+        int w2 = width/items.length-20;
+        for (int i = 0; i < items.length; i++) {
+            guiElements.add(new Label(x+(w1*i)+10,y,w2,height, items[i], c));
+        }
     }
 
     /**

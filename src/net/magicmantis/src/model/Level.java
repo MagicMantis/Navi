@@ -103,12 +103,6 @@ public class Level {
 		int greenDrones = Game.rand.nextInt(10);
 		int redDrones = Game.rand.nextInt(10);
 		int yellowDrones = Game.rand.nextInt(10);
-
-		options.put("spawnFactories", false);
-        blueDrones = 1;
-		redDrones = 10;
-        greenDrones = 0;
-        yellowDrones = 0;
 		
 		//determine amount of teams
         Headquarters blueHQ, greenHQ, redHQ, yellowHQ;
@@ -175,9 +169,8 @@ public class Level {
 			int limit2 = 0;
 			boolean blue, green, red, yellow;
 			blue = green = red = yellow = false;
-			
-			if (blueDrones > 0)
-				blue = true;
+
+            blue = true;
 			if (greenDrones > 0)
 				green = true;
 			if (redDrones > 0)

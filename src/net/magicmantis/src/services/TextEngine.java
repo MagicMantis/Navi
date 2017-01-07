@@ -36,7 +36,7 @@ public class TextEngine {
                                      double height, int xView, int yView, Color color, double size) {
         //get the color from the entity
         int col[] = {color.getRed(), color.getGreen(), color.getBlue()};
-        GL11.glColor3d(col[0], col[1], col[2]);
+        GL11.glColor3d(col[0]/255f, col[1]/255f, col[2]/255f);
         GL11.glLineWidth((float) size);
 
         x -= xView;
