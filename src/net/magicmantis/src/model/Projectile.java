@@ -13,6 +13,7 @@ public abstract class Projectile extends Entity {
 	private int team; //which team the projectile belongs to
 	private double speed, direction; //the speed and direction the projectile is traveling
 	private int timer; //how many ticks the projectile will last
+	private Target owner;
 
 	/**
 	 * Create a new projectile.
@@ -27,13 +28,14 @@ public abstract class Projectile extends Entity {
 	 * @param setTimer - how long (in ticks) the projectile will last.
 	 * @param setLevel - reference to the level in which the projectile exists.
 	 */
-	public Projectile(double setX, double setY, int setWidth, int setHeight, int setTeam, double setSpeed, double setDirection, int setTimer, Level setLevel)
+	public Projectile(double setX, double setY, int setWidth, int setHeight, int setTeam, double setSpeed, double setDirection, int setTimer, Target owner, Level setLevel)
 	{
 		super(setX, setY, setWidth, setHeight, setLevel);
 		team = setTeam;
 		speed = setSpeed;
 		direction = setDirection;
 		timer = setTimer;
+		this.owner = owner;
 	}
 	
 	public int getTeam()
@@ -107,7 +109,9 @@ public abstract class Projectile extends Entity {
      *
      * @param e - the ship with which the projectile collided
      */
-	public abstract void onImpact(Target e);
+	public void onImpact(Target e) {
+		level.results.addHit(owner);
+	}
 
     public boolean isShip() {
         return false;
@@ -117,13 +121,17 @@ public abstract class Projectile extends Entity {
         return false;
     }
 
-    @Override
-    public void fromData(EntityData entityData) {
-        super.fromData(entityData);
-        team = entityData.getTeam();
-        speed = entityData.getSpeed();
-        direction = entityData.getDirection();
-        timer = entityData.getTimer();
-    }
+	@Override
+	public void fromData(EntityData entityData) {
+		super.fromData(entityData);
+		team = entityData.getTeam();
+		speed = entityData.getSpeed();
+		direction = entityData.getDirection();
+		timer = entityData.getTimer();
+		owner = entityData.getOwner();
+	}
 
+	public Target getOwner() {
+		return owner;
+	}
 }

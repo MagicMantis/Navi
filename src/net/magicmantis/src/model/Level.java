@@ -18,6 +18,7 @@ public class Level {
 	private List<Entity> removeList = new ArrayList<Entity>(); //list of entities to add next cycle
     private Game game; //reference to the game object
 	public Player player; //reference to the player belonging to this client
+    public Results results;
     public int xView, yView, xViewSize, yViewSize; //current camera position and size
     private boolean lockedCamera; //camera is following player
     private double minimapWidth, minimapHeight; //minimap size information
@@ -53,6 +54,7 @@ public class Level {
         lockedCamera = true;
 
         this.options = options;
+        this.results = new Results();
     }
 
     public Level(Game game, int width, int height) {
@@ -244,6 +246,7 @@ public class Level {
 			}
 			
 		}
+        results.addScore(player, "Player1");
 	}
 
 	/**
@@ -396,7 +399,7 @@ public class Level {
                 d.fromData(e);
             }
             if (e.getStoredClass() == Bullet.class) {
-                Bullet b = new Bullet(0, 0, 0, 0, 0, this);
+                Bullet b = new Bullet(0, 0, 0, 0, 0, null, this);
                 b.fromData(e);
             }
             if (e.getStoredClass() == Headquarters.class) {

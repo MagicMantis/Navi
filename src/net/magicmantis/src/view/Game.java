@@ -2,6 +2,7 @@ package net.magicmantis.src.view;
 
 import net.magicmantis.src.exceptions.GameNotFoundException;
 import net.magicmantis.src.model.Level;
+import net.magicmantis.src.model.Results;
 import net.magicmantis.src.model.Target;
 import net.magicmantis.src.server.OnlineGame;
 import net.magicmantis.src.services.ServerController;
@@ -31,6 +32,7 @@ public class Game implements Runnable {
 	public Level level; //level contains the information about the currently executing level and all entities
 	public HUD hud; //hud gives information to the player
 	public Menu menu; //reference to a menu instance
+    public Results results;
 
     private ServerController serverProxy; //controller for interacting with a server
     private OnlineGame onlineGame; //reference to the OnlineGame instance the player is currently connected to
@@ -171,8 +173,8 @@ public class Game implements Runnable {
         for (int i : Target.getTeamCount()) {
             if (i > 0) teamsRemaining++;
         }
-        System.out.println();
         if (teamsRemaining <= 1 || Target.getTeamCount()[level.player.getTeam()-1] == 0) {
+            results = level.results;
             level = null;
             showMenu(2);
         }

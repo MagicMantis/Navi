@@ -103,16 +103,19 @@ public abstract class Target extends Entity {
      *
      * @param damage - amount of life to subtract from this target.
      */
-    public void damage(int damage)
+    public boolean damage(int damage)
     {
         life -= damage;
         drawHealthBar = true;
         drawHealthBarTimer = 60;
+        if (life <= 0) return true;
+        return false;
     }
 
     @Override
     public void destroy() {
         teamCount[team-1] -= 1;
+        level.results.addDeath(this);
         super.destroy();
     }
 

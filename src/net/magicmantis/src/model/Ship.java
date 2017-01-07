@@ -232,7 +232,8 @@ public class Ship extends Target {
 	 */
 	public void fireBullet(int offset)
 	{
-		new Bullet(getX(), getY(), getTeam(), 4+rand.nextInt(4)/2, getFacingDirection()+offset, level);
+		new Bullet(getX(), getY(), getTeam(), 4+rand.nextInt(4)/2, getFacingDirection()+offset, this, level);
+		level.results.addShot(this);
 	}
 
 	/**

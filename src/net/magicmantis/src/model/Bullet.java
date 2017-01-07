@@ -19,9 +19,9 @@ public class Bullet extends Projectile {
      * @param setDirection - direction in degrees
      * @param setLevel - reference to the level in which the bullet exists
      */
-    public Bullet(double setX, double setY, int setTeam, double setSpeed, double setDirection, Level setLevel)
+    public Bullet(double setX, double setY, int setTeam, double setSpeed, double setDirection, Target owner, Level setLevel)
 	{
-		super(setX, setY, 3, 3, setTeam, setSpeed, setDirection, 100, setLevel);
+		super(setX, setY, 3, 3, setTeam, setSpeed, setDirection, 100, owner, setLevel);
 	}
 
     /**
@@ -59,7 +59,8 @@ public class Bullet extends Projectile {
      */
 	public void onImpact(Target e)
 	{
-		e.damage(10);
+		if (e.damage(10)) level.results.addKill(getOwner());
+		level.results.addDamage(getOwner(), 10);
 		destroy();
 	}
 
