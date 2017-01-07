@@ -128,7 +128,6 @@ public abstract class Projectile extends Entity {
 		speed = entityData.getSpeed();
 		direction = entityData.getDirection();
 		timer = entityData.getTimer();
-		owner = entityData.getOwner();
 	}
 
 	public Target getOwner() {

@@ -27,8 +27,6 @@ public class ServerControllerServer implements ServerController {
     private User user;
     private int gameIDs;
 
-    private static final Gson gson = new Gson();
-
     public ServerControllerServer(ArrayList<OnlineGame> games, User user) {
         this.games = games;
         this.user = user;
@@ -83,10 +81,9 @@ public class ServerControllerServer implements ServerController {
         user.getOutput().writeInt(game.getID());
         user.getOutput().writeInt(game.getMaxPlayers());
         user.getOutput().writeInt(game.getPlayerCount());
-        user.getOutput().writeUTF(gson.toJson(game.getUserData()));
-        user.getOutput().writeUTF(gson.toJson(game.getOptions()));
+        user.getOutput().writeUTF(new Gson().toJson(game.getUserData()));
+        user.getOutput().writeUTF(new Gson().toJson(game.getOptions()));
         user.getOutput().writeBoolean(game.isStarted());
-        user.getOutput().writeBoolean(game.isRunning());
         return null;
     }
 
@@ -146,13 +143,6 @@ public class ServerControllerServer implements ServerController {
             int gameID = user.getInput().readInt();
             if (gameID != user.getGame().getID()) throw new GameNotFoundException();
 
-            user.getOutput().writeBoolean(user.getGame().isEnded());
-            if (user.getGame().isEnded()) {
-                user.getOutput().writeInt(user.getGame().getResults().getWinner());
-                user.getOutput().writeUTF(gson.toJson(user.getGame().getResults().getScoreReport()));
-                user.getOutput().writeUTF(gson.toJson(user.getGame().getResults().getHistory()));
-            }
-
             //send level
             LevelData levelData = new LevelData(user.getGame().getLevel(), user.getID());
             user.getOutput().writeUTF(Utility.getClassGson().toJson(levelData));
@@ -167,19 +157,6 @@ public class ServerControllerServer implements ServerController {
             user.userInput.put(input.substring(0, input.indexOf(':')),
                     Boolean.valueOf(input.substring(input.indexOf(':') + 1, input.indexOf(';'))));
             input = input.substring(input.indexOf(';')+1);
-        }
-    }
-
-    @Override
-    public void checkGameStatus() throws IOException, GameNotFoundException {
-        int gameID = user.getInput().readInt();
-        OnlineGame game = null;
-        for (OnlineGame g : games) {
-            if (g.getID() == gameID) game = g;
-        }
-        if (game == null) throw new GameNotFoundException();
-        user.getOutput().writeBoolean(game.isEnded());
-        if (game.isEnded()) {
         }
     }
 

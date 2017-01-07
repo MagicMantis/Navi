@@ -32,7 +32,6 @@ public class EntityData {
 
     //projectile
     private int timer;
-    private Target owner;
 
     //player
     private int playerID;
@@ -102,7 +101,6 @@ public class EntityData {
         speed = p.getSpeed();
         direction = p.getDirection();
         timer = p.getTimer();
-        owner = p.getOwner();
     }
 
     /**
@@ -203,8 +201,6 @@ public class EntityData {
     public int getTimer() {
         return timer;
     }
-
-    public Target getOwner() { return owner; }
 
     public int getPlayerID() { return playerID; }
 

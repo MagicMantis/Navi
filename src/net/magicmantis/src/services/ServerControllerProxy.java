@@ -29,8 +29,6 @@ import java.util.Map;
 
 public class ServerControllerProxy implements ServerController {
 
-    private static final Gson gson = new Gson();
-
     private boolean locked;
     private Game game;
 
@@ -91,21 +89,19 @@ public class ServerControllerProxy implements ServerController {
         //userdata
         String userDataString = in.readUTF();
         Type mapType = new TypeToken<Map<Integer, UserData>>(){}.getType();
-        HashMap<Integer,UserData> userData = gson.fromJson(userDataString, mapType);
+        HashMap<Integer,UserData> userData = new Gson().fromJson(userDataString, mapType);
 
         //options
         String optionsString = in.readUTF();
         mapType = new TypeToken<Map<String, Object>>(){}.getType();
-        Map<String,Object> options = gson.fromJson(optionsString, mapType);
+        Map<String,Object> options = new Gson().fromJson(optionsString, mapType);
 
         boolean started = in.readBoolean();
-        boolean running = in.readBoolean();
 
         OnlineGame info = new OnlineGame(gameID, maxPlayers);
         info.setPlayerCount(playerCount);
         info.setUserData(userData);
         info.setOptions(options);
-        info.setRunning(running);
 
         //start the game without starting the OnlineGame loop (since local copy is only used for information)
         if (started) info.startNoLoop();
@@ -166,26 +162,6 @@ public class ServerControllerProxy implements ServerController {
             out.writeInt(6);
             out.writeInt(game.getGameID());
 
-            boolean ended = in.readBoolean();
-            if (ended) {
-                System.out.print("Game has ended, getting results...");
-                int winner = in.readInt();
-
-                String scoreReportString = in.readUTF();
-                Type mapType = new TypeToken<ArrayList<String>>(){}.getType();
-                ArrayList<String> scoreReport = gson.fromJson(scoreReportString, mapType);
-
-                String historyString = in.readUTF();
-                mapType = new TypeToken<ArrayList<int[]>>(){}.getType();
-                ArrayList<int[]> history = gson.fromJson(scoreReportString, mapType);
-
-                game.getOnlineGame().getResults().setWinner(winner);
-                game.getOnlineGame().getResults().setScoreReport(scoreReport);
-                game.getOnlineGame().getResults().setHistory(history);
-                game.getOnlineGame().setEnded(true);
-                return;
-            }
-
             //receive response
             String levelDataString = in.readUTF();
             LevelData levelData = Utility.getClassGson().fromJson(levelDataString, LevelData.class);
@@ -214,17 +190,6 @@ public class ServerControllerProxy implements ServerController {
             input += "d:"+Game.dkey+";";
             out.writeUTF(input);
         }
-    }
-
-    @Override
-    public void checkGameStatus() throws IOException {
-        System.out.println("getGameInfo()");
-        out.writeInt(10);
-        out.writeInt(game.getGameID());
-
-        boolean ended = in.readBoolean();
-
-
     }
 
     //lock server request commands for other threads
