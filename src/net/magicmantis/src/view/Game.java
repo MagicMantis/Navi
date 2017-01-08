@@ -231,7 +231,7 @@ public class Game implements Runnable {
         if (key == GLFW.GLFW_KEY_D)
             Game.dkey = true;
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            if (!paused) showMenu(0);
+            if (!paused) showMenu(3);
             else if (level != null) paused = false;
         }
 	}
@@ -315,4 +315,16 @@ public class Game implements Runnable {
         this.sessionID = sessionID;
     }
 
+    public void reset() {
+        level = null;
+        if (serverProxy != null) {
+            try {
+                serverProxy.disconnect();
+            } catch (IOException e) {
+
+            } finally {
+                onlineGame = null;
+            }
+        }
+    }
 }

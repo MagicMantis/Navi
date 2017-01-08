@@ -17,7 +17,8 @@ import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
 /**
- * Created by Joseph on 5/4/2015.
+ * Class ServerControllerServer: this is the controller class that handles client-server
+ * communication from the server side.
  */
 
 public class ServerControllerServer implements ServerController {
@@ -25,12 +26,11 @@ public class ServerControllerServer implements ServerController {
     private boolean locked;
     private ArrayList<OnlineGame> games;
     private User user;
-    private int gameIDs;
+    private static int gameIDs = 0;
 
     public ServerControllerServer(ArrayList<OnlineGame> games, User user) {
         this.games = games;
         this.user = user;
-        this.gameIDs = 0;
         this.locked = false;
     }
 

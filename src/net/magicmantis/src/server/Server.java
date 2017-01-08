@@ -1,5 +1,8 @@
 package net.magicmantis.src.server;
 
+import net.magicmantis.src.services.ServerController;
+import net.magicmantis.src.services.ServerControllerProxy;
+
 import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
@@ -7,9 +10,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 /**
- * Created by Joseph on 5/4/2015.
+ * Server class: awaits new connections and creates User threads
+ * to handle communication per client connection. Also manages
+ * array of active games and removes inactive ones.
  */
-
 public class Server {
 
     private ServerSocket serverSock; //socket to accept new connections

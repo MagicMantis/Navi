@@ -58,52 +58,23 @@ public class Menu {
         else if (menu == 2) {
             resultsScreen();
         }
+        //pause menu
+        else if (menu == 3) {
+            pauseMenu();
+        }
 	}
 
     /**
      * Shows the main menu of the game
      */
 	private void mainMenu() {
+	    game.reset();
 	    //title
         guiElements.add(new Label(game.getWidth()/2, game.getHeight()-100, 400, 100, "Project Navi", Color.white));
         //new game button
-        guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2+120,
-                120, 60, "New Game", () -> {
-            int size = Game.rand.nextInt(2)*1000;
-            game.newLevel(2000+size, 2000+size);
-            game.paused = false;
-            return null;
-        }));
-        //continue button
-        guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2+40,
-                120, 60, "Continue", () -> {
-            if (game.level != null)
-                game.paused = false;
-            return null;
-        }));
-        //multiplayer button
-        guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2-40,
-                120, 60, "Multiplayer", () -> {
-            try {
-                game.setServerProxy(new ServerControllerProxy(game));
-                game.getServerProxy().matchMake();
-                game.setOnlineGame(game.getServerProxy().getGameInfo());
-                game.getServerProxy().unlock();
-            } catch (ConnectException e) {
-                System.err.println("Could not connect to server.");
-                return null;
-            } catch (IOException | GameNotFoundException e) {
-                e.printStackTrace();
-            }
-            game.showMenu(1);
-            return null;
-        }));
-        //quit button
-        guiElements.add(new Button(game.getWidth()/2, game.getHeight()/2-120,
-                120, 60, "Quit", () -> {
-            System.exit(0);
-            return null;
-        }));
+        addNewButton(game.getWidth()/2, game.getHeight()/2+40);
+        addMultiplayerButton(game.getWidth()/2, game.getHeight()/2-40);
+        addQuitButton(game.getWidth()/2,game.getHeight()/2-120);
     }
 
     /**
@@ -123,20 +94,8 @@ public class Menu {
             });
             return null;
         }));
-        //cancel button
-        guiElements.add(new Button(game.getWidth()-300, 100,
-                120, 60, "Cancel", () -> {
-            serverActionQueue.add(() -> {
-                try {
-                    game.getServerProxy().disconnect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                game.showMenu(0);
-                return null;
-            });
-            return null;
-        }));
+        addMainMenuButton(game.getWidth()-300, 100, "Leave Game");
+
         //allow team switch
         allowTeamsSwitch = new Switch(game.getWidth() - 400, game.getHeight() - 100, 100, 40, "Teams", false,() -> {
             serverActionQueue.add(() -> {
@@ -226,6 +185,7 @@ public class Menu {
         guiElements.add(new History(10,10, game.getWidth()-200, 200, game.results.getHistory()));
 
         //continue
+        addMainMenuButton(game.getWidth()-150, 100, "Continue");
         guiElements.add(new Button(game.getWidth()-150, 100,
                 120, 60, "Continue", () -> {
             game.showMenu(0);
@@ -233,6 +193,16 @@ public class Menu {
         }));
     }
 
+    /**
+     * Creates a row of labels from a string delimited by tabs
+     *
+     * @param s - string delimted by tabs containing content for labels
+     * @param x - bottom left corner x
+     * @param y - bottom left corner y
+     * @param width - width of space occupied by all labels
+     * @param height - height of space occupied by all labels
+     * @param c - color to make the labels
+     */
     private void labelRow(String s, int x, int y, int width, int height, Color c) {
         String items[] = s.split("\t");
         int w1 = width/items.length;
@@ -242,11 +212,22 @@ public class Menu {
         }
     }
 
+    private void pauseMenu() {
+        //title
+        guiElements.add(new Label(game.getWidth()/2, game.getHeight()-100, 400, 100, "Project Navi", Color.white));
+        addContinueButton(game.getWidth()/2, game.getHeight()/2+40);
+        addMultiplayerButton(game.getWidth()/2,game.getHeight()/2-40);
+        addMainMenuButton(game.getWidth()/2, game.getHeight()/2-120, "End Game");
+    }
+
     /**
      * Draw the current menu
      */
 	public void draw()
 	{
+	    if (menu == 3) {
+            game.level.draw();
+        }
         //draw buttons (created upon showing the menu
         for (GUIElement e : guiElements) {
             e.draw();
@@ -283,6 +264,66 @@ public class Menu {
 
         }
 	}
+
+	private void addNewButton(int x, int y) {
+        guiElements.add(new Button(x, y,
+                120, 60, "New Game", () -> {
+            int size = Game.rand.nextInt(2)*1000;
+            game.newLevel(2000+size, 2000+size);
+            game.paused = false;
+            return null;
+        }));
+    }
+
+	private void addContinueButton(int x, int y) {
+        //continue button
+        guiElements.add(new Button(x, y,
+                120, 60, "Continue", () -> {
+            if (game.level != null)
+                game.paused = false;
+            return null;
+        }));
+    }
+
+	private void addMultiplayerButton(int x, int y) {
+        //multiplayer button
+        guiElements.add(new Button(x, y,
+                120, 60, "Multiplayer", () -> {
+            game.reset();
+            try {
+                game.setServerProxy(new ServerControllerProxy(game));
+                game.getServerProxy().matchMake();
+                game.setOnlineGame(game.getServerProxy().getGameInfo());
+                game.getServerProxy().unlock();
+            } catch (ConnectException e) {
+                System.err.println("Could not connect to server.");
+                game.showMenu(0);
+                return null;
+            } catch (IOException | GameNotFoundException e) {
+                e.printStackTrace();
+            }
+            game.showMenu(1);
+            return null;
+        }));
+    }
+
+    //add button that returns to the main menu
+    private void addMainMenuButton(int x, int y, String text) {
+        guiElements.add(new Button(x, y,
+                120, 60, text, () -> {
+            game.showMenu(0);
+            return null;
+        }));
+    }
+
+    private void addQuitButton(int x, int y) {
+        //quit button
+        guiElements.add(new Button(x, game.getHeight()/2-120,
+                120, 60, "Quit", () -> {
+            System.exit(0);
+            return null;
+        }));
+    }
 
 	public void mouseEvent(int button) {
         if (Game.mousePressed) {
