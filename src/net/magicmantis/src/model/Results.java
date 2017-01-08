@@ -16,6 +16,7 @@ public class Results {
     private ArrayList<String> scoreReport;
     private ArrayList<int[]> history;
 
+    private int[] teamCount = {0,0,0,0,0,0,0,0};
     private boolean remainingTeams[] = {false,false,false,false,false,false,false,false};
     private int winner;
 
@@ -59,12 +60,31 @@ public class Results {
         }
     }
 
+    public int[] getTeamCount() {
+        return teamCount;
+    }
+
+    public void resetTeamCount() {
+        for (int i = 0; i < teamCount.length; i++) {
+            teamCount[i] = 0;
+        }
+    }
+
+    public void addTeamCount(int team) {
+        if (team == 0) return;
+        teamCount[team-1]++;
+    }
+
+    public void lowerTeamCount(int team) {
+        teamCount[team-1] -= 1;
+    }
+
     public ArrayList<int[]> getHistory() {
         return history;
     }
 
     public void store() {
-        this.history.add(Target.getTeamCount().clone());
+        this.history.add(teamCount.clone());
     }
 
     /**
@@ -99,7 +119,7 @@ public class Results {
     }
 
     public void addDeath(Target e) {
-        if (Target.getTeamCount()[e.getTeam()-1] == 0) defeatTeam(e.getTeam()-1);
+        if (teamCount[e.getTeam()-1] == 0) defeatTeam(e.getTeam()-1);
         if (!names.containsKey(e)) addScore(e);
         scores.get(names.get(e)).addDeath();
     }

@@ -182,10 +182,10 @@ public class Game implements Runnable {
 
     private void checkVictory() {
 	    int teamsRemaining = 0;
-        for (int i : Target.getTeamCount()) {
+        for (int i : level.results.getTeamCount()) {
             if (i > 0) teamsRemaining++;
         }
-        if (teamsRemaining <= 1 || Target.getTeamCount()[level.player.getTeam()-1] == 0) {
+        if (teamsRemaining <= 1 || level.results.getTeamCount()[level.player.getTeam()-1] == 0) {
             level.results.store();
             level.results.evalScoreReport();
             results = level.results;

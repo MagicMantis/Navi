@@ -197,8 +197,8 @@ public class OnlineGame {
 
     private void checkVictory() {
         int teamsRemaining = 0;
-        for (int i : Target.getTeamCount()) {
-            System.out.print(i);
+        for (int i : level.results.getTeamCount()) {
+            System.out.print(i+" ");
             if (i > 0) teamsRemaining++;
         }
         System.out.println();

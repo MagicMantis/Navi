@@ -23,8 +23,6 @@ public abstract class Target extends Entity {
     public static double[][] teamColors = {BLUE_TEAM_COLOR, GREEN_TEAM_COLOR, RED_TEAM_COLOR, YELLOW_TEAM_COLOR,
             PURPLE_TEAM_COLOR, ORANGE_TEAM_COLOR, LIME_TEAM_COLOR, PINK_TEAM_COLOR};
 
-    private static int teamCount[] = {0,0,0,0,0,0,0,0};
-
     private int team; //team that this target belongs to (cannot take damage from projectiles of the same team.
     private int life, maxLife; //life and maxLife for this target. target spawns with life = maxLife and is destroyed when life = 0
     private boolean drawHealthBar; //should the health bar be drawn for this target.
@@ -34,7 +32,7 @@ public abstract class Target extends Entity {
         super(x, y, width, height, level);
 
         this.team = team;
-        addTeamCount(team);
+        this.level.results.addTeamCount(team);
         this.maxLife = life;
         this.life = life;
         this.drawHealthBar = false;
@@ -86,19 +84,6 @@ public abstract class Target extends Entity {
         this.life = life;
     }
 
-    public static int[] getTeamCount() { return teamCount; }
-
-    public static void resetTeamCount() {
-        for (int i = 0; i < teamCount.length; i++) {
-            teamCount[i] = 0;
-        }
-    }
-
-    public static void addTeamCount(int team) {
-        if (team == 0) return;
-        teamCount[team-1]++;
-    }
-
     /**
      * Inflict specified damage on this target.
      *
@@ -115,7 +100,7 @@ public abstract class Target extends Entity {
 
     @Override
     public void destroy() {
-        teamCount[team-1] -= 1;
+        level.results.lowerTeamCount(team);
         level.results.addDeath(this);
         super.destroy();
     }

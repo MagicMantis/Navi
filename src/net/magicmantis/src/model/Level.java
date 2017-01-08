@@ -73,7 +73,7 @@ public class Level {
 	 * Generate the level, call private methods that generate the individual parts
 	 */
     public void generate() {
-        Target.resetTeamCount();
+        results.resetTeamCount();
         generateSpace();
         generateUnits();
     }

@@ -70,7 +70,7 @@ public class Headquarters extends Spawner {
         Player spawnPlayer = respawnQueue.get(0);
         spawnPlayer.reset();
         level.addEntity(spawnPlayer);
-        Target.addTeamCount(spawnPlayer.getTeam());
+        level.results.addTeamCount(spawnPlayer.getTeam());
         respawnQueue.remove(0);
     }
 }
