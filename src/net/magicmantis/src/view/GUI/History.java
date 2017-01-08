@@ -25,7 +25,7 @@ public class History extends GUIElement {
 
     @Override
     public void draw() {
-        for (int team = 0; team < history.get(0).length; team++) {
+        for (int team = 0; team < 8; team++) {
             double[] col = Target.getColor(team+1);
             GL11.glColor3d(col[0], col[1], col[2]);
             GL11.glBegin(GL11.GL_LINE_LOOP);

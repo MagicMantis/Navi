@@ -200,14 +200,14 @@ public class Menu {
         double[] colorVals = Target.getColor(game.results.getWinner());
         Color c = new Color((float)colorVals[0],(float)colorVals[1],(float)colorVals[2]);
         switch (game.results.getWinner()) {
-            case 1: s = "Blue";
-            case 2: s = "Green";
-            case 3: s = "Red";
-            case 4: s = "Yellow";
-            case 5: s = "Purple";
-            case 6: s = "Orange";
-            case 7: s = "Lime";
-            case 8: s = "Pink";
+            case 1: s = "Blue"; break;
+            case 2: s = "Green"; break;
+            case 3: s = "Red"; break;
+            case 4: s = "Yellow"; break;
+            case 5: s = "Purple"; break;
+            case 6: s = "Orange"; break;
+            case 7: s = "Lime"; break;
+            case 8: s = "Pink"; break;
             default: s = "Blue";
         }
         guiElements.add(new Label(game.getWidth()/2, game.getHeight()-30, 200, 100, s+" Team Wins", c));

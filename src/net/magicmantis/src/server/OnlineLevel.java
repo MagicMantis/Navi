@@ -72,8 +72,11 @@ public class OnlineLevel extends Level {
             //create the player base
             new Headquarters(xSpawn, ySpawn, ud.getTeam(), this);
             if ((boolean) onlineGame.getOptions().get("spawnFactories")) new Factory(xSpawn+120, ySpawn, ud.getTeam(), this);
-            playerShips.put(u.getID(), new Player(xSpawn, ySpawn, u.getID(), ud.getTeam(), this));
+            Player p = new Player(xSpawn, ySpawn, u.getID(), ud.getTeam(), this);
+            playerShips.put(u.getID(), p);
+            results.addScore(p, ud.getUsername());
         }
+        results.store();
     }
 
     /**

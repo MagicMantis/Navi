@@ -107,6 +107,8 @@ public class Level {
 
 		yellowDrones = 0;
 		redDrones = 0;
+		greenDrones = 12;
+
         options.put("spawnFactories", false);
         options.put("spawnHeadquarters", false);
 		

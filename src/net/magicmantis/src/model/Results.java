@@ -73,10 +73,12 @@ public class Results {
     public void addTeamCount(int team) {
         if (team == 0) return;
         teamCount[team-1]++;
+        remainingTeams[team-1] = true;
     }
 
     public void lowerTeamCount(int team) {
         teamCount[team-1] -= 1;
+        if (teamCount[team-1] == 0) defeatTeam(team-1);
     }
 
     public ArrayList<int[]> getHistory() {
@@ -119,7 +121,6 @@ public class Results {
     }
 
     public void addDeath(Target e) {
-        if (teamCount[e.getTeam()-1] == 0) defeatTeam(e.getTeam()-1);
         if (!names.containsKey(e)) addScore(e);
         scores.get(names.get(e)).addDeath();
     }
