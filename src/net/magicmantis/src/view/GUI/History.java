@@ -32,6 +32,7 @@ public class History extends GUIElement {
             double interval = (double)width/(double)history.size();
             int i;
             for (i = 0; i < history.size(); i++) {
+                if (i == 0 && history.get(i)[team] == 0) break;
                 GL11.glVertex2d(x+(i*interval), y+history.get(i)[team]*5);
             }
             while (i > 0) {

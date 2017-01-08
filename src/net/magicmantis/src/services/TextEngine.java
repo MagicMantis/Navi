@@ -15,8 +15,9 @@ public class TextEngine {
     public static final double textAspectRatio = 3d/2d;
 
     public static String[] namebank = {"Ramirez", "Jady", "Goose", "Flyboy", "Thunder", "Tropico", "Bugs", "Fatso", "Captain",
-        "Cosmo", "Badger", "Aslan", "Syndrome", "Gator", "Nutsbe", "Frog", "Wiki", "Paps", "Razor", "Vampire", "Matta", "Mikey",
-        "Zaire", "Yak", "X", "Wolf", "Warbird", "Ahab"};
+            "Cosmo", "Badger", "Aslan", "Syndrome", "Gator", "Nutsbe", "Frog", "Wiki", "Paps", "Razor", "Vampire", "Matta", "Mikey",
+            "Zaire", "Yak", "X", "Wolf", "Warbird", "Ahab", "Rodeo", "Dusty", "Thirsty", "Soda", "Slave", "Rouge", "Bat",
+            "Uncle Sam", "Fish", "Stark", "Meat", "Data", "Wheatly", "Clank"};
 
 
     /**
