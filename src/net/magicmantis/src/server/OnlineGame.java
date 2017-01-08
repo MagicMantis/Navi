@@ -46,6 +46,8 @@ public class OnlineGame {
         this.ended = false;
         this.ticker = 0;
 
+        this.results = new Results();
+
         players = new ArrayList<User>();
         userData = new HashMap<Integer, UserData>();
 
@@ -196,8 +198,10 @@ public class OnlineGame {
     private void checkVictory() {
         int teamsRemaining = 0;
         for (int i : Target.getTeamCount()) {
+            System.out.print(i);
             if (i > 0) teamsRemaining++;
         }
+        System.out.println();
         if (teamsRemaining <= 1) {
             level.results.store();
             results = level.results;
@@ -221,6 +225,7 @@ public class OnlineGame {
     }
 
     public void endGame() {
+        System.out.println(playerCount);
         System.out.println("Ended Game with no Connected Players.");
         ended = true;
         running = false;

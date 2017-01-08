@@ -145,6 +145,11 @@ public class Game implements Runnable {
             if (onlineGame != null) {
                 try {
                     serverProxy.getLevel();
+                    if (onlineGame.isEnded()) {
+                        serverProxy.getResults();
+                        results = onlineGame.getResults();
+                        showMenu(2);
+                    }
                     level.updateOnline();
                     level.updateEntityList();
                     serverProxy.updateInput();

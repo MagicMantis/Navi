@@ -215,9 +215,6 @@ public class Menu {
         //score report
         labelRow("Unit\tKills\tDeaths\tDamage\tAccuracy\tScore",70,game.getHeight()-80,game.getWidth(), 20,Color.white);
         ArrayList<String> report = game.results.getScoreReport();
-        System.out.println("Score 1");
-        System.out.println(report);
-        System.out.println(report.get(0));
         for (int i = 0; i < Math.min(report.size(), 20); i++) {
             s = report.get(i);
             colorVals = Target.getColor(Integer.valueOf(s.split("\t")[0]));

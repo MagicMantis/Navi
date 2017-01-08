@@ -23,6 +23,7 @@ public class Results {
         names = new HashMap<>();
         scores = new HashMap<>();
         history = new ArrayList<>();
+        winner = 1; //default winner is blue team for now
     }
 
     public void evalScoreReport() {

@@ -39,7 +39,7 @@ public class ServerControllerProxy implements ServerController {
     public ServerControllerProxy(Game game) throws IOException {
         this.game = game;
         this.locked = true;
-        sock = new Socket("localhost", 8080);
+        sock = new Socket(Utility.getIP(), 8080);
         in = new DataInputStream(sock.getInputStream());
         out = new DataOutputStream(sock.getOutputStream());
         connect();
@@ -164,7 +164,8 @@ public class ServerControllerProxy implements ServerController {
 
             //receive response
             String levelDataString = in.readUTF();
-            LevelData levelData = Utility.getClassGson().fromJson(levelDataString, LevelData.class);
+            if (levelDataString.charAt(0) == 'T') game.getOnlineGame().setEnded(true);
+            LevelData levelData = Utility.getClassGson().fromJson(levelDataString.substring(1), LevelData.class);
 
             //format game
             if (game.level == null) game.level = new Level(game, 0, 0);
@@ -189,6 +190,30 @@ public class ServerControllerProxy implements ServerController {
             input += "space:"+Game.spacekey+";";
             input += "d:"+Game.dkey+";";
             out.writeUTF(input);
+        }
+    }
+
+    @Override
+    public void getResults() throws IOException, GameNotFoundException {
+        synchronized (this) {
+            System.err.println("getLevel()");
+            //send get level request
+            out.writeInt(10);
+            out.writeInt(game.getGameID());
+
+            int winner = in.readInt();
+
+            String scoreReportString = in.readUTF();
+            Type mapType = new TypeToken<ArrayList<String>>(){}.getType();
+            ArrayList<String> scoreReport = new Gson().fromJson(scoreReportString, mapType);
+
+            String historyString = in.readUTF();
+            mapType = new TypeToken<ArrayList<int[]>>(){}.getType();
+            ArrayList<int[]> history = new Gson().fromJson(historyString, mapType);
+
+            game.getOnlineGame().getResults().setWinner(winner);
+            game.getOnlineGame().getResults().setScoreReport(scoreReport);
+            game.getOnlineGame().getResults().setHistory(history);
         }
     }
 

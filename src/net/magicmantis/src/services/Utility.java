@@ -2,15 +2,47 @@ package net.magicmantis.src.services;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.sun.corba.se.spi.orbutil.fsm.Input;
 
+import javax.print.DocFlavor;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
 /**
- * Created by Joseph on 5/30/2015.
+ * Utility Class: Class for extra functions
  */
 public class Utility {
+
+    public static String getIP() {
+
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+            if (!new File("config.properties").exists()) {
+                try {
+                    FileOutputStream output = new FileOutputStream("config.properties");
+                    prop.setProperty("ip", "localhost");
+                    prop.store(output, null);
+                    output.close();
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            input = new FileInputStream("config.properties");
+            prop.load(input);
+            input.close();
+            return prop.getProperty("ip");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static Gson getClassGson() {
         return new GsonBuilder().registerTypeAdapter(Class.class, new ClassTypeAdapter()).setPrettyPrinting().create();

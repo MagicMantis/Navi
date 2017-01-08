@@ -43,7 +43,7 @@ public class Server {
                         //end all stopped games
                         for (int i = 0; i < games.size(); i++) {
                             OnlineGame game = games.get(i);
-                            if (game.isStarted() && !game.isRunning()) {
+                            if (game.isStarted() && game.getPlayers().isEmpty()) {
                                 games.remove(game);
                                 i--;
                             }

@@ -145,7 +145,8 @@ public class ServerControllerServer implements ServerController {
 
             //send level
             LevelData levelData = new LevelData(user.getGame().getLevel(), user.getID());
-            user.getOutput().writeUTF(Utility.getClassGson().toJson(levelData));
+            char ended = (user.getGame().isEnded() ? 'T' : 'F');
+            user.getOutput().writeUTF(ended + Utility.getClassGson().toJson(levelData));
         }
     }
 
@@ -158,6 +159,17 @@ public class ServerControllerServer implements ServerController {
                     Boolean.valueOf(input.substring(input.indexOf(':') + 1, input.indexOf(';'))));
             input = input.substring(input.indexOf(';')+1);
         }
+    }
+
+    @Override
+    public void getResults() throws IOException, GameNotFoundException {
+        int gameID = user.getInput().readInt();
+        if (gameID != user.getGame().getID()) throw new GameNotFoundException();
+
+        user.getGame().getResults().evalScoreReport();
+        user.getOutput().writeInt(user.getGame().getResults().getWinner());
+        user.getOutput().writeUTF(new Gson().toJson(user.getGame().getResults().getScoreReport()));
+        user.getOutput().writeUTF(new Gson().toJson(user.getGame().getResults().getHistory()));
     }
 
     @Override

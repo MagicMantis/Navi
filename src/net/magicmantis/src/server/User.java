@@ -77,6 +77,7 @@ public class User implements Runnable {
                         case 7: serverController.updateInput(); break;
                         case 8: serverController.changeOption(null, null); break;
                         case 9: serverController.changeTeam(0, true); break;
+                        case 10: serverController.getResults(); break;
                         default: disconnect(); break;
                     }
                 }
