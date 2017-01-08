@@ -11,8 +11,8 @@ import java.nio.file.Paths;
  */
 public class Space {
 	
-	public static int WIDTH = 1200;
-	public static int HEIGHT = 900;
+	public static int WIDTH = 1000;
+	public static int HEIGHT = 800;
 
     public static void main(String[] args) {
         //ensure path variables support lwjgl
