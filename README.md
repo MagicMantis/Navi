@@ -1,5 +1,5 @@
 # Navi
-Multiplayer online RTS/MOBA set in space. Primary object is to experiment with neural networks and machine learning in game AI.
+Multiplayer online RTS/MOBA set in space. The reason I made the game was to improve my client-server network coding skills, as well as to experiment with neural networks and machine learning in game AI.
 
 Players control space ships and attempt to destroy opponents base. Various structures on each team spawn units that will help in the attack.
 
