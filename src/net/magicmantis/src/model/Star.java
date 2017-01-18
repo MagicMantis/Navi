@@ -4,8 +4,6 @@ import net.magicmantis.src.view.Game;
 import net.magicmantis.src.view.Screen;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.ArrayList;
 
 /**
@@ -44,14 +42,15 @@ public class Star {
      * @param yView - offset due to camera location
      */
     public void draw(int xView, int yView) {
-        int size = 1+type;
-        if (x-xView+size < 0 || x-xView > Screen.WIDTH || y-yView+size < 0 || y-yView > Screen.HEIGHT) return;
-        GL11.glColor3f(1f,1f,1f);
+        int size = 1 + type;
+        if (x - xView + size < 0 || x - xView > Screen.WIDTH || y - yView + size < 0 || y - yView > Screen.HEIGHT)
+            return;
+        GL11.glColor3f(1f, 1f, 1f);
         GL11.glBegin(GL11.GL_POLYGON);
-        GL11.glVertex2f(x - xView+size, y - yView);
-        GL11.glVertex2f(x - xView, y - yView-size);
-        GL11.glVertex2f(x - xView-size, y - yView);
-        GL11.glVertex2f(x - xView, y - yView+size);
+        GL11.glVertex2f(x - xView + size, y - yView);
+        GL11.glVertex2f(x - xView, y - yView - size);
+        GL11.glVertex2f(x - xView - size, y - yView);
+        GL11.glVertex2f(x - xView, y - yView + size);
         GL11.glEnd();
     }
 

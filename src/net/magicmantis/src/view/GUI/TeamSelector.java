@@ -2,14 +2,12 @@ package net.magicmantis.src.view.GUI;
 
 import net.magicmantis.src.exceptions.AccessDeniedException;
 import net.magicmantis.src.model.Ship;
-import net.magicmantis.src.server.OnlineGame;
 import net.magicmantis.src.server.dataStructures.UserData;
 import net.magicmantis.src.services.TextEngine;
 import net.magicmantis.src.view.Game;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
-import java.util.Vector;
 import java.util.concurrent.Callable;
 
 /**
@@ -76,23 +74,23 @@ public class TeamSelector extends GUIElement {
     public void draw() {
         if (userData != null) {
             GL11.glBegin(GL11.GL_QUADS);
-            GL11.glColor3d(Ship.teamColors[userData.getTeam()-1][0],Ship.teamColors[userData.getTeam()-1][1],
-                    Ship.teamColors[userData.getTeam()-1][2]);
+            GL11.glColor3d(Ship.teamColors[userData.getTeam() - 1][0], Ship.teamColors[userData.getTeam() - 1][1],
+                    Ship.teamColors[userData.getTeam() - 1][2]);
             GL11.glVertex2f(x - width / 2, y - height / 2);
             GL11.glVertex2f(x - width / 2, y + height / 2);
-            GL11.glVertex2f(x+width/2, y+height/2);
-            GL11.glVertex2f(x+width/2, y-height/2);
+            GL11.glVertex2f(x + width / 2, y + height / 2);
+            GL11.glVertex2f(x + width / 2, y - height / 2);
             GL11.glEnd();
 
             String username = userData.getUsername();
-            TextEngine.drawText(username, x + width, y-5, 10*(username.length()), 20, false);
+            TextEngine.drawText(username, x + width, y - 5, 10 * (username.length()), 20, false);
         }
-        GL11.glColor3f(1f,1f,1f);
+        GL11.glColor3f(1f, 1f, 1f);
         GL11.glBegin(GL11.GL_LINE_LOOP);
         GL11.glVertex2f(x - width / 2, y - height / 2);
         GL11.glVertex2f(x - width / 2, y + height / 2);
-        GL11.glVertex2f(x+width/2, y+height/2);
-        GL11.glVertex2f(x+width/2, y-height/2);
+        GL11.glVertex2f(x + width / 2, y + height / 2);
+        GL11.glVertex2f(x + width / 2, y - height / 2);
         GL11.glEnd();
     }
 }

@@ -10,9 +10,9 @@ import java.nio.file.Paths;
  * Space class: This class is the entry point for launching the lwjgl application.
  */
 public class Space {
-	
-	public static int WIDTH = 1000;
-	public static int HEIGHT = 800;
+
+    public static int WIDTH = 1000;
+    public static int HEIGHT = 800;
 
     public static void main(String[] args) {
         //ensure path variables support lwjgl

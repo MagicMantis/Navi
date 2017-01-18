@@ -16,8 +16,8 @@ public class Results {
     private ArrayList<String> scoreReport;
     private ArrayList<int[]> history;
 
-    private int[] teamCount = {0,0,0,0,0,0,0,0};
-    private boolean remainingTeams[] = {false,false,false,false,false,false,false,false};
+    private int[] teamCount = {0, 0, 0, 0, 0, 0, 0, 0};
+    private boolean remainingTeams[] = {false, false, false, false, false, false, false, false};
     private int winner;
 
     public Results() {
@@ -30,7 +30,7 @@ public class Results {
         ArrayList<String> report = new ArrayList<>();
         for (Entry<String, Score> e : sortByValue(scores).entrySet()) {
             Score s = e.getValue();
-            report.add(s.getTeam()+"\t"+e.getKey()+"\t"+s.getKills()+"\t"+s.getDeaths()+"\t"+s.getDamage()+"\t"+s.getAccuracy()+"%\t"+s.calculateScore());
+            report.add(s.getTeam() + "\t" + e.getKey() + "\t" + s.getKills() + "\t" + s.getDeaths() + "\t" + s.getDamage() + "\t" + s.getAccuracy() + "%\t" + s.calculateScore());
         }
         scoreReport = report;
     }
@@ -50,7 +50,7 @@ public class Results {
         for (int i = 0; i < remainingTeams.length; i++) {
             if (remainingTeams[i] == true) {
                 teams++;
-                win = i+1;
+                win = i + 1;
             }
         }
         if (teams == 1) {
@@ -71,13 +71,13 @@ public class Results {
 
     public void addTeamCount(int team) {
         if (team == 0) return;
-        teamCount[team-1]++;
-        remainingTeams[team-1] = true;
+        teamCount[team - 1]++;
+        remainingTeams[team - 1] = true;
     }
 
     public void lowerTeamCount(int team) {
-        teamCount[team-1] -= 1;
-        if (teamCount[team-1] == 0) defeatTeam(team-1);
+        teamCount[team - 1] -= 1;
+        if (teamCount[team - 1] == 0) defeatTeam(team - 1);
     }
 
     public ArrayList<int[]> getHistory() {
@@ -96,7 +96,7 @@ public class Results {
     public void addScore(Target e) {
         String name;
         do {
-             name = generateName();
+            name = generateName();
         } while (scores.containsKey(name));
         names.put(e, name);
         scores.put(name, new Score(e));
@@ -106,8 +106,7 @@ public class Results {
         if (!names.containsKey(e)) {
             names.put(e, name);
             scores.put(name, new Score(e));
-        }
-        else {
+        } else {
             scores.remove(names.get(e));
             names.put(e, name);
             scores.put(name, new Score(e));
@@ -165,24 +164,21 @@ public class Results {
         return name;
     }
 
-    public static Map<String, Score> sortByValue( Map<String, Score> map ) {
+    public static Map<String, Score> sortByValue(Map<String, Score> map) {
         List<Entry<String, Score>> list =
-                new LinkedList<Entry<String, Score>>( map.entrySet() );
-        Collections.sort( list, new Comparator<Map.Entry<String, Score>>()
-        {
+                new LinkedList<Entry<String, Score>>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Score>>() {
             @Override
-            public int compare( Map.Entry<String, Score> o1, Map.Entry<String, Score> o2 )
-            {
+            public int compare(Map.Entry<String, Score> o1, Map.Entry<String, Score> o2) {
                 int score1 = o1.getValue().calculateScore();
                 int score2 = o2.getValue().calculateScore();
                 return score1 > score2 ? -1 : score1 < score2 ? 1 : 0;
             }
-        } );
+        });
 
         Map<String, Score> result = new LinkedHashMap<String, Score>();
-        for (Map.Entry<String, Score> entry : list)
-        {
-            result.put( entry.getKey(), entry.getValue() );
+        for (Map.Entry<String, Score> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
         }
         return result;
     }

@@ -1,8 +1,5 @@
 package net.magicmantis.src.view.GUI;
 
-import net.magicmantis.src.view.GUI.Button;
-import net.magicmantis.src.view.GUI.Switch;
-
 import java.util.concurrent.Callable;
 
 /**

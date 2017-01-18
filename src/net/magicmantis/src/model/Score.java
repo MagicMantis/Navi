@@ -19,8 +19,8 @@ public class Score {
     }
 
     public int calculateScore() {
-        double initScore = ((kills-deaths) * 100 + damage);
-        double score = initScore + (initScore*0.2*(double)hits/(double)shots);
+        double initScore = ((kills - deaths) * 100 + damage);
+        double score = initScore + (initScore * 0.2 * (double) hits / (double) shots);
         return (int) score;
     }
 
@@ -65,9 +65,11 @@ public class Score {
     }
 
     public int getAccuracy() {
-        return (int) (((double)hits/(double)shots) * 100);
+        return (int) (((double) hits / (double) shots) * 100);
     }
 
-    public int getTeam() { return team; }
+    public int getTeam() {
+        return team;
+    }
 
 }

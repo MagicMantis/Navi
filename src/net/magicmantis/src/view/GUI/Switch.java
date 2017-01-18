@@ -1,9 +1,7 @@
 package net.magicmantis.src.view.GUI;
 
 import net.magicmantis.src.services.TextEngine;
-import net.magicmantis.src.view.Game;
 
-import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -24,8 +22,8 @@ public class Switch extends GUIElement {
         this.on = currentValue;
         this.onAction = onAction;
         this.offAction = offAction;
-        onButton = new SwitchButton(x+width+10, y, width, height, "On", true, this);
-        offButton = new SwitchButton(x+width*2+20, y, width, height, "Off", false, this);
+        onButton = new SwitchButton(x + width + 10, y, width, height, "On", true, this);
+        offButton = new SwitchButton(x + width * 2 + 20, y, width, height, "Off", false, this);
     }
 
     public void update() {
@@ -65,7 +63,7 @@ public class Switch extends GUIElement {
     }
 
     public void draw() {
-        TextEngine.drawText(text, x-width/2, y-height/2, width, height/2, false);
+        TextEngine.drawText(text, x - width / 2, y - height / 2, width, height / 2, false);
         onButton.draw();
         offButton.draw();
     }

@@ -2,9 +2,6 @@ package net.magicmantis.src.view.GUI;
 
 import net.magicmantis.src.view.Game;
 
-import java.util.List;
-import java.util.concurrent.Callable;
-
 /**
  * GUIElement class: parent class for all interfaces such as buttons, switches, and sliders.
  */
@@ -19,9 +16,8 @@ public abstract class GUIElement {
         this.height = height;
     }
 
-    protected boolean checkCollision()
-    {
-        if (Game.mouseX < x+width/2 && Game.mouseX > x-width/2 && Game.mouseY < y+height/2 && Game.mouseY > y-height/2)
+    protected boolean checkCollision() {
+        if (Game.mouseX < x + width / 2 && Game.mouseX > x - width / 2 && Game.mouseY < y + height / 2 && Game.mouseY > y - height / 2)
             return true;
         else
             return false;

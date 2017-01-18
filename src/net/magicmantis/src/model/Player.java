@@ -16,24 +16,23 @@ public class Player extends Ship {
      * Create a new player with default parameters. Used in combination with fromData().
      */
     public Player() {
-        super(0,0,16,16,1,100,4,2,null);
+        super(0, 0, 16, 16, 1, 100, 4, 2, null);
         playerID = -1;
     }
 
     /**
      * Create a new Player instance.
      *
-     * @param x - initial x location.
-     * @param y - initial y location.
-     * @param pid - player id (for online play).
-     * @param team - which team the player belongs to.
+     * @param x     - initial x location.
+     * @param y     - initial y location.
+     * @param pid   - player id (for online play).
+     * @param team  - which team the player belongs to.
      * @param level - reference to the level in which this player exists.
      */
-	public Player(int x, int y, int pid, int team, Level level)
-	{
-		super(x, y, 16, 16, team, 100, 4, 2, level);
+    public Player(int x, int y, int pid, int team, Level level) {
+        super(x, y, 16, 16, team, 100, 4, 2, level);
         playerID = pid;
-	}
+    }
 
     /**
      * Create a player instance from data stored in a EntityData object.
@@ -55,7 +54,7 @@ public class Player extends Ship {
     }
 
     public double[] getColor() {
-        double[] pCol = Ship.teamColors[getTeam()-1].clone();
+        double[] pCol = Ship.teamColors[getTeam() - 1].clone();
         int max = 0;
         for (int i = 1; i < 3; i++) {
             if (pCol[i] > pCol[max]) max = i;
@@ -72,7 +71,7 @@ public class Player extends Ship {
         for (Entity e : level.getEntityList()) {
             if (e instanceof Headquarters) {
                 Headquarters hq = (Headquarters) e;
-                if (hq.getTeam() == this.getTeam()){
+                if (hq.getTeam() == this.getTeam()) {
                     hq.queueSpawn(this);
                     setX(hq.getX());
                     setY(hq.getY());

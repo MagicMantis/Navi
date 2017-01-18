@@ -6,8 +6,8 @@ import net.magicmantis.src.exceptions.GameNotFoundException;
 import net.magicmantis.src.exceptions.UnknownOptionException;
 import net.magicmantis.src.services.ServerController;
 import net.magicmantis.src.services.ServerControllerServer;
-import net.magicmantis.src.view.Game;
 import net.magicmantis.src.services.TextEngine;
+import net.magicmantis.src.view.Game;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -37,7 +37,7 @@ public class User implements Runnable {
         disconnected = false;
         this.id = id;
         this.username = TextEngine.namebank[Game.rand.nextInt(TextEngine.namebank.length)];
-        System.out.println(username + " - id: "+id);
+        System.out.println(username + " - id: " + id);
         this.sock = sock;
         out = new DataOutputStream(sock.getOutputStream());
         in = new DataInputStream(sock.getInputStream());
@@ -51,12 +51,12 @@ public class User implements Runnable {
      */
     private void initInput() {
         userInput = new HashMap<String, Boolean>();
-        userInput.put("left",false);
-        userInput.put("right",false);
-        userInput.put("up",false);
-        userInput.put("down",false);
-        userInput.put("space",false);
-        userInput.put("d",false);
+        userInput.put("left", false);
+        userInput.put("right", false);
+        userInput.put("up", false);
+        userInput.put("down", false);
+        userInput.put("space", false);
+        userInput.put("d", false);
     }
 
     @Override
@@ -67,27 +67,50 @@ public class User implements Runnable {
                     int code = in.readInt();
 
                     switch (code) {
-                        case 0: disconnect(); break;
-                        case 1: serverController.connect(); break;
-                        case 2: serverController.authenticate(); break;
-                        case 3: serverController.matchMake(); break;
-                        case 4: serverController.getGameInfo(); break;
-                        case 5: serverController.startGame(); break;
-                        case 6: serverController.getLevel(); break;
-                        case 7: serverController.updateInput(); break;
-                        case 8: serverController.changeOption(null, null); break;
-                        case 9: serverController.changeTeam(0, true); break;
-                        case 10: serverController.getResults(); break;
-                        default: disconnect(); break;
+                        case 0:
+                            disconnect();
+                            break;
+                        case 1:
+                            serverController.connect();
+                            break;
+                        case 2:
+                            serverController.authenticate();
+                            break;
+                        case 3:
+                            serverController.matchMake();
+                            break;
+                        case 4:
+                            serverController.getGameInfo();
+                            break;
+                        case 5:
+                            serverController.startGame();
+                            break;
+                        case 6:
+                            serverController.getLevel();
+                            break;
+                        case 7:
+                            serverController.updateInput();
+                            break;
+                        case 8:
+                            serverController.changeOption(null, null);
+                            break;
+                        case 9:
+                            serverController.changeTeam(0, true);
+                            break;
+                        case 10:
+                            serverController.getResults();
+                            break;
+                        default:
+                            disconnect();
+                            break;
                     }
-                }
-                catch (GameNotFoundException | FailedStartGameException | ClassNotFoundException | UnknownOptionException e){
+                } catch (GameNotFoundException | FailedStartGameException | ClassNotFoundException | UnknownOptionException e) {
                     out.writeInt(-1);
                 } catch (AccessDeniedException e) {
                     out.writeInt(-2);
                 }
             } catch (IOException e) {
-                System.out.println("User disconnected: "+username);
+                System.out.println("User disconnected: " + username);
                 disconnect();
             }
         }
@@ -114,7 +137,9 @@ public class User implements Runnable {
         return id;
     }
 
-    public String getUsername() { return username; }
+    public String getUsername() {
+        return username;
+    }
 
     public void setGame(OnlineGame game) {
         this.game = game;

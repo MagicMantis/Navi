@@ -2,12 +2,9 @@ package net.magicmantis.src.model;
 
 import net.magicmantis.src.server.dataStructures.EntityData;
 
-import javax.swing.text.html.HTML;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glVertex2d;
 
 /**
  * Created by Joseph on 12/14/2015.
@@ -37,10 +34,10 @@ public class Headquarters extends Spawner {
         glColor3d(col[0], col[1], col[2]);
 
         glBegin(GL_LINE_LOOP);
-        glVertex2d(getX()-xView-getWidth()/2, getY()-yView-getHeight()/2);
-        glVertex2d(getX()-xView+getWidth()/2, getY()-yView-getHeight()/2);
-        glVertex2d(getX()-xView+getWidth()/2, getY()-yView+getHeight()/2);
-        glVertex2d(getX()-xView-getWidth()/2, getY()-yView+getHeight()/2);
+        glVertex2d(getX() - xView - getWidth() / 2, getY() - yView - getHeight() / 2);
+        glVertex2d(getX() - xView + getWidth() / 2, getY() - yView - getHeight() / 2);
+        glVertex2d(getX() - xView + getWidth() / 2, getY() - yView + getHeight() / 2);
+        glVertex2d(getX() - xView - getWidth() / 2, getY() - yView + getHeight() / 2);
         glEnd();
 
         //draw respawn box
@@ -48,10 +45,10 @@ public class Headquarters extends Spawner {
             glColor3d(1d, 1d, 1d);
             double ratio = (double) getSpawnCooldown() / (double) getSpawnRate();
             glBegin(GL_LINE_LOOP);
-            glVertex2d(getX()-xView-getWidth()/2*ratio, getY()-yView-getHeight()/2*ratio);
-            glVertex2d(getX()-xView+getWidth()/2*ratio, getY()-yView-getHeight()/2*ratio);
-            glVertex2d(getX()-xView+getWidth()/2*ratio, getY()-yView+getHeight()/2*ratio);
-            glVertex2d(getX()-xView-getWidth()/2*ratio, getY()-yView+getHeight()/2*ratio);
+            glVertex2d(getX() - xView - getWidth() / 2 * ratio, getY() - yView - getHeight() / 2 * ratio);
+            glVertex2d(getX() - xView + getWidth() / 2 * ratio, getY() - yView - getHeight() / 2 * ratio);
+            glVertex2d(getX() - xView + getWidth() / 2 * ratio, getY() - yView + getHeight() / 2 * ratio);
+            glVertex2d(getX() - xView - getWidth() / 2 * ratio, getY() - yView + getHeight() / 2 * ratio);
             glEnd();
         }
     }

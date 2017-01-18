@@ -1,13 +1,10 @@
 package net.magicmantis.src.server;
 
 import net.magicmantis.src.model.Results;
-import net.magicmantis.src.model.Target;
 import net.magicmantis.src.server.dataStructures.UserData;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -35,7 +32,7 @@ public class OnlineGame {
     /**
      * Create a new Online Game for players to join.
      *
-     * @param id - unique identifier for this online game.
+     * @param id         - unique identifier for this online game.
      * @param maxPlayers - maximum players that can join this game.
      */
     public OnlineGame(int id, int maxPlayers) {
@@ -71,7 +68,9 @@ public class OnlineGame {
         return players;
     }
 
-    public HashMap<Integer, UserData> getUserData() { return userData; }
+    public HashMap<Integer, UserData> getUserData() {
+        return userData;
+    }
 
     public boolean isFull() {
         return (playerCount == maxPlayers);
@@ -82,10 +81,10 @@ public class OnlineGame {
 
         //determine starting team
         int team = 1;
-        for (int i = 1; i < maxPlayers+1; i++) {
+        for (int i = 1; i < maxPlayers + 1; i++) {
             for (UserData u : userData.values()) {
                 if (u.getTeam() == i) {
-                    System.out.println("Found team "+u.getTeam()+": "+u.getUsername());
+                    System.out.println("Found team " + u.getTeam() + ": " + u.getUsername());
                     team++;
                     break;
                 }
@@ -107,7 +106,7 @@ public class OnlineGame {
         }
         int playerNumber = userData.get(user.getID()).getPlayerNumber();
         for (UserData u : userData.values()) {
-            if (u.getPlayerNumber() > playerNumber) u.setPlayerNumber(u.getPlayerNumber()-1);
+            if (u.getPlayerNumber() > playerNumber) u.setPlayerNumber(u.getPlayerNumber() - 1);
         }
         userData.remove(user.getID());
         playerCount--;
@@ -122,7 +121,9 @@ public class OnlineGame {
         return hostID;
     }
 
-    public Results getResults() { return results; }
+    public Results getResults() {
+        return results;
+    }
 
     public void setPlayerCount(int playerCount) {
         this.playerCount = playerCount;
@@ -135,10 +136,9 @@ public class OnlineGame {
     public void changeTeam(int playerID, boolean direction) {
         UserData user = userData.get(playerID);
         if ((boolean) options.get("allowTeams")) {
-            if (direction) user.setTeam(user.getTeam()%8+1);
-            else user.setTeam((user.getTeam()+6)%8+1);
-        }
-        else {
+            if (direction) user.setTeam(user.getTeam() % 8 + 1);
+            else user.setTeam((user.getTeam() + 6) % 8 + 1);
+        } else {
             for (boolean badteam = true; badteam; ) {
                 if (direction) user.setTeam(user.getTeam() % 8 + 1);
                 else user.setTeam((user.getTeam() + 6) % 8 + 1);
@@ -241,7 +241,9 @@ public class OnlineGame {
         return running;
     }
 
-    public boolean isEnded() { return ended; }
+    public boolean isEnded() {
+        return ended;
+    }
 
     public OnlineLevel getLevel() {
         return level;
@@ -251,7 +253,7 @@ public class OnlineGame {
         return options;
     }
 
-    public void setOptions(Map<String,Object> options) {
+    public void setOptions(Map<String, Object> options) {
         this.options = options;
     }
 

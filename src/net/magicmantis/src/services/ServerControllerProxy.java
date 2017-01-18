@@ -7,15 +7,16 @@ import net.magicmantis.src.exceptions.FailedStartGameException;
 import net.magicmantis.src.exceptions.GameNotFoundException;
 import net.magicmantis.src.exceptions.UnknownOptionException;
 import net.magicmantis.src.model.Level;
-import net.magicmantis.src.server.dataStructures.LevelData;
 import net.magicmantis.src.server.OnlineGame;
+import net.magicmantis.src.server.dataStructures.LevelData;
 import net.magicmantis.src.server.dataStructures.UserData;
 import net.magicmantis.src.view.Game;
 import net.magicmantis.src.view.HUD;
 
-import java.awt.*;
-import java.awt.image.DataBuffer;
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class ServerControllerProxy implements ServerController {
         System.out.println("connect");
         out.writeInt(1);
         game.setSessionID(in.readInt());
-        System.out.println("game "+game.getSessionID());
+        System.out.println("game " + game.getSessionID());
     }
 
     @Override
@@ -88,13 +89,15 @@ public class ServerControllerProxy implements ServerController {
 
         //userdata
         String userDataString = in.readUTF();
-        Type mapType = new TypeToken<Map<Integer, UserData>>(){}.getType();
-        HashMap<Integer,UserData> userData = new Gson().fromJson(userDataString, mapType);
+        Type mapType = new TypeToken<Map<Integer, UserData>>() {
+        }.getType();
+        HashMap<Integer, UserData> userData = new Gson().fromJson(userDataString, mapType);
 
         //options
         String optionsString = in.readUTF();
-        mapType = new TypeToken<Map<String, Object>>(){}.getType();
-        Map<String,Object> options = new Gson().fromJson(optionsString, mapType);
+        mapType = new TypeToken<Map<String, Object>>() {
+        }.getType();
+        Map<String, Object> options = new Gson().fromJson(optionsString, mapType);
 
         boolean started = in.readBoolean();
 
@@ -183,12 +186,12 @@ public class ServerControllerProxy implements ServerController {
             //System.err.println("updateGame()");
             //write update game request
             out.writeInt(7);
-            String input = "left:"+Game.leftkey+";";
-            input += "right:"+Game.rightkey+";";
-            input += "up:"+Game.upkey+";";
-            input += "down:"+Game.downkey+";";
-            input += "space:"+Game.spacekey+";";
-            input += "d:"+Game.dkey+";";
+            String input = "left:" + Game.leftkey + ";";
+            input += "right:" + Game.rightkey + ";";
+            input += "up:" + Game.upkey + ";";
+            input += "down:" + Game.downkey + ";";
+            input += "space:" + Game.spacekey + ";";
+            input += "d:" + Game.dkey + ";";
             out.writeUTF(input);
         }
     }
@@ -204,11 +207,13 @@ public class ServerControllerProxy implements ServerController {
             int winner = in.readInt();
 
             String scoreReportString = in.readUTF();
-            Type mapType = new TypeToken<ArrayList<String>>(){}.getType();
+            Type mapType = new TypeToken<ArrayList<String>>() {
+            }.getType();
             ArrayList<String> scoreReport = new Gson().fromJson(scoreReportString, mapType);
 
             String historyString = in.readUTF();
-            mapType = new TypeToken<ArrayList<int[]>>(){}.getType();
+            mapType = new TypeToken<ArrayList<int[]>>() {
+            }.getType();
             ArrayList<int[]> history = new Gson().fromJson(historyString, mapType);
 
             game.getOnlineGame().getResults().setWinner(winner);

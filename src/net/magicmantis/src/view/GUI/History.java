@@ -13,31 +13,33 @@ public class History extends GUIElement {
     private ArrayList<int[]> history;
 
     public History(int x, int y, int width, int height, ArrayList<int[]> history) {
-        super(x,y,width,height);
+        super(x, y, width, height);
         this.history = history;
     }
 
     @Override
-    public void update() { }
+    public void update() {
+    }
 
     @Override
-    public void mouseEvent(int button) { }
+    public void mouseEvent(int button) {
+    }
 
     @Override
     public void draw() {
         for (int team = 0; team < 8; team++) {
-            double[] col = Target.getColor(team+1);
+            double[] col = Target.getColor(team + 1);
             GL11.glColor3d(col[0], col[1], col[2]);
             GL11.glBegin(GL11.GL_LINE_LOOP);
-            double interval = (double)width/(double)history.size();
+            double interval = (double) width / (double) history.size();
             int i;
             for (i = 0; i < history.size(); i++) {
                 if (i == 0 && history.get(i)[team] == 0) break;
-                GL11.glVertex2d(x+(i*interval), y+history.get(i)[team]*5);
+                GL11.glVertex2d(x + (i * interval), y + history.get(i)[team] * 5);
             }
             while (i > 0) {
                 i--;
-                GL11.glVertex2d(x+(i*interval), y+history.get(i)[team]*5);
+                GL11.glVertex2d(x + (i * interval), y + history.get(i)[team] * 5);
             }
             GL11.glEnd();
         }

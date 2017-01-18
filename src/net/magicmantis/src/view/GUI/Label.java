@@ -1,7 +1,6 @@
 package net.magicmantis.src.view.GUI;
 
 import net.magicmantis.src.services.TextEngine;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -20,13 +19,15 @@ public class Label extends GUIElement {
     }
 
     @Override
-    public void update() { }
+    public void update() {
+    }
 
     @Override
-    public void mouseEvent(int button) { }
+    public void mouseEvent(int button) {
+    }
 
     @Override
     public void draw() {
-        TextEngine.drawText(text, x-3*width/8, y-height/4, 3*width/4, height/2, 0,0,false, color, 1);
+        TextEngine.drawText(text, x - 3 * width / 8, y - height / 4, 3 * width / 4, height / 2, 0, 0, false, color, 1);
     }
 }

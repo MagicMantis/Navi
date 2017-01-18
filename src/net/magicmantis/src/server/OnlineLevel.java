@@ -24,8 +24,8 @@ public class OnlineLevel extends Level {
     /**
      * Create a new online level.
      *
-     * @param game - pass reference to the online game that this instance is associated with.
-     * @param width - width of the level.
+     * @param game   - pass reference to the online game that this instance is associated with.
+     * @param width  - width of the level.
      * @param height - height of the level.
      */
     public OnlineLevel(OnlineGame game, int width, int height, Map<String, Object> options) {
@@ -42,12 +42,9 @@ public class OnlineLevel extends Level {
      * Generate environment, synced across all clients.
      */
     @Override
-    protected void generateSpace()
-    {
-        for(int i = 0; i < getWidth(); i++)
-        {
-            for(int j = 0; j < getHeight(); j++)
-            {
+    protected void generateSpace() {
+        for (int i = 0; i < getWidth(); i++) {
+            for (int j = 0; j < getHeight(); j++) {
                 if (Game.rand.nextInt(2000) == 0)
                     new Star(i, j);
             }
@@ -65,13 +62,14 @@ public class OnlineLevel extends Level {
 
             //generate suitable spawn location
             int xSpawn = Game.rand.nextInt(getWidth());
-            while (xSpawn < 400 || xSpawn > getWidth()-400) xSpawn = Game.rand.nextInt(getWidth());
+            while (xSpawn < 400 || xSpawn > getWidth() - 400) xSpawn = Game.rand.nextInt(getWidth());
             int ySpawn = Game.rand.nextInt(getHeight());
-            while (ySpawn < 400 || ySpawn > getHeight()-400) ySpawn = Game.rand.nextInt(getHeight());
+            while (ySpawn < 400 || ySpawn > getHeight() - 400) ySpawn = Game.rand.nextInt(getHeight());
 
             //create the player base
             new Headquarters(xSpawn, ySpawn, ud.getTeam(), this);
-            if ((boolean) onlineGame.getOptions().get("spawnFactories")) new Factory(xSpawn+120, ySpawn, ud.getTeam(), this);
+            if ((boolean) onlineGame.getOptions().get("spawnFactories"))
+                new Factory(xSpawn + 120, ySpawn, ud.getTeam(), this);
             Player p = new Player(xSpawn, ySpawn, u.getID(), ud.getTeam(), this);
             playerShips.put(u.getID(), p);
             results.addScore(p, ud.getUsername());

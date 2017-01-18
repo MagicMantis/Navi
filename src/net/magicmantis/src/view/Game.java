@@ -3,15 +3,11 @@ package net.magicmantis.src.view;
 import net.magicmantis.src.exceptions.GameNotFoundException;
 import net.magicmantis.src.model.Level;
 import net.magicmantis.src.model.Results;
-import net.magicmantis.src.model.Target;
 import net.magicmantis.src.server.OnlineGame;
 import net.magicmantis.src.services.ServerController;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
@@ -23,125 +19,116 @@ import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
  */
 public class Game implements Runnable {
 
-	public static boolean running = false;
-	
-	public int WIDTH, HEIGHT; //width and height of the screen, used primarily for HUD placement.
+    public static boolean running = false;
+
+    public int WIDTH, HEIGHT; //width and height of the screen, used primarily for HUD placement.
     public static int mouseX, mouseY; //variables to store the mouseX and mouseY locations for easy access across all classes
     public static boolean mousePressed; //if the mouse is pressed, can be easily accessed by all classes
 
     public Screen screen; //reference to the screen instance that acts as a display for this game
-	public Level level; //level contains the information about the currently executing level and all entities
-	public HUD hud; //hud gives information to the player
-	public Menu menu; //reference to a menu instance
+    public Level level; //level contains the information about the currently executing level and all entities
+    public HUD hud; //hud gives information to the player
+    public Menu menu; //reference to a menu instance
     public Results results;
 
     private ServerController serverProxy; //controller for interacting with a server
     private OnlineGame onlineGame; //reference to the OnlineGame instance the player is currently connected to
     private int gameID; //id of current online game
     private int sessionID; //id of current server session
-	
-	public static Random rand = new Random(); //random class instance,  accessible from all classes
+
+    public static Random rand = new Random(); //random class instance,  accessible from all classes
 
     //key boolean store information about keys pressed without constantly polling, can be accessed from all classes
-	public static boolean leftkey, rightkey, downkey, upkey, spacekey;
-	public static boolean dkey, skey;
-	
-	public boolean paused;
-	private int ticker;
+    public static boolean leftkey, rightkey, downkey, upkey, spacekey;
+    public static boolean dkey, skey;
+
+    public boolean paused;
+    private int ticker;
 
     /**
      * Initialize a game.
      *
-     * @param screen - screen to display to
-     * @param setWidth - width of the specified screen
+     * @param screen    - screen to display to
+     * @param setWidth  - width of the specified screen
      * @param setHeight - height of the specified screen
      */
-	public Game(Screen screen, int setWidth, int setHeight) {
+    public Game(Screen screen, int setWidth, int setHeight) {
 
-		WIDTH = setWidth;
-		HEIGHT = setHeight;
+        WIDTH = setWidth;
+        HEIGHT = setHeight;
 
         this.screen = screen;
 
         //show startup menu
-		showMenu(0);
+        showMenu(0);
 
         //zero all keys
-		leftkey = false;
-		rightkey = false;
-		downkey = false;
-		upkey = false;
-		spacekey = false;
-		dkey = false;
-		skey = false;
-		ticker = 0;
-	}
-
-    //
+        leftkey = false;
+        rightkey = false;
+        downkey = false;
+        upkey = false;
+        spacekey = false;
+        dkey = false;
+        skey = false;
+        ticker = 0;
+    }
 
     /**
      * Pause game and create menu of specified screen
      *
      * @param menuScreen - which menu screen to display, info found in Menu class
      */
-	public void showMenu(int menuScreen)
-	{
-		paused = true;
-		menu = new Menu(menuScreen, this);
-	}
+    public void showMenu(int menuScreen) {
+        paused = true;
+        menu = new Menu(menuScreen, this);
+    }
 
     //create a new level of size width * height
 
     /**
      * Create a new level instance and set to currently active level
      *
-     * @param width - width of the ingame level (not screen width)
+     * @param width  - width of the ingame level (not screen width)
      * @param height - height of the ingame level (not screen height)
      */
-	public void newLevel(int width, int height)
-	{
+    public void newLevel(int width, int height) {
         //create hud too if there is not current level
-		if (level == null) {
+        if (level == null) {
             level = new Level(this, width, height);
             level.generate();
             hud = new HUD(this, level);
-        }
-		else
-		{
-			level = new Level(this, width, height);
+        } else {
+            level = new Level(this, width, height);
             level.generate();
-		}
+        }
 
         //update the hud to new level
-		if (hud != null)
-			hud.update();
-	}
+        if (hud != null)
+            hud.update();
+    }
 
     /**
      * Start the main game loop
      */
     @Override
-	public void run()
-	{
+    public void run() {
         running = true;
-		while (running)
-		{
-			tick();
+        while (running) {
+            tick();
             try {
                 Thread.sleep(15);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-	}
+    }
 
     /**
      * Update the active component, either a menu or a level and hud.
      * Primary logic function.
      */
-	private void tick() 
-	{
-	    if (!paused) {
+    private void tick() {
+        if (!paused) {
             if (onlineGame != null) {
                 try {
                     serverProxy.getLevel();
@@ -158,9 +145,7 @@ public class Game implements Runnable {
                 } catch (GameNotFoundException e) {
                     e.printStackTrace();
                 }
-            }
-            else
-            {
+            } else {
                 level.update();
                 level.updateEntityList();
 
@@ -173,19 +158,17 @@ public class Game implements Runnable {
                     checkVictory();
                 }
             }
+        } else {
+            menu.update();
         }
-		else
-		{
-			menu.update();
-		}
-	}
+    }
 
     private void checkVictory() {
-	    int teamsRemaining = 0;
+        int teamsRemaining = 0;
         for (int i : level.results.getTeamCount()) {
             if (i > 0) teamsRemaining++;
         }
-        if (teamsRemaining <= 1 || level.results.getTeamCount()[level.player.getTeam()-1] == 0) {
+        if (teamsRemaining <= 1 || level.results.getTeamCount()[level.player.getTeam() - 1] == 0) {
             level.results.store();
             level.results.evalScoreReport();
             results = level.results;
@@ -198,18 +181,15 @@ public class Game implements Runnable {
      * Draw the active component, either a menu or level and hud.
      * Primary interface between the game logic and the screen.
      */
-	public void draw() throws InterruptedException {
-		//graphics
-		if (!paused)
-		{
-			level.draw();
-			hud.draw();
-		}
-		else
-		{
-			menu.draw();
-		}
-	}
+    public void draw() throws InterruptedException {
+        //graphics
+        if (!paused) {
+            level.draw();
+            hud.draw();
+        } else {
+            menu.draw();
+        }
+    }
 
     /**
      * Update the static key boolean to pressed for easy access by other classes without
@@ -217,7 +197,7 @@ public class Game implements Runnable {
      *
      * @param key - key code for the key to be set to pressed. (GLFW_KEY)
      */
-	public void keyPressed(int key) {
+    public void keyPressed(int key) {
         if (key == GLFW.GLFW_KEY_LEFT)
             Game.leftkey = true;
         if (key == GLFW.GLFW_KEY_RIGHT)
@@ -234,7 +214,7 @@ public class Game implements Runnable {
             if (!paused) showMenu(3);
             else if (level != null) paused = false;
         }
-	}
+    }
 
     /**
      * Update the static key boolean to released for easy access by other classes without
@@ -242,7 +222,7 @@ public class Game implements Runnable {
      *
      * @param key - key code for the key to be released. (GLFW_KEY)
      */
-	public void keyReleased(int key) {
+    public void keyReleased(int key) {
         if (key == GLFW.GLFW_KEY_LEFT)
             Game.leftkey = false;
         if (key == GLFW.GLFW_KEY_RIGHT)
@@ -255,7 +235,7 @@ public class Game implements Runnable {
             Game.spacekey = false;
         if (key == GLFW.GLFW_KEY_D)
             Game.dkey = false;
-	}
+    }
 
     /**
      * Pass the mouse event to the currently active
@@ -269,11 +249,10 @@ public class Game implements Runnable {
         if (paused) menu.mouseEvent(button);
         else if (!hud.mouseEvent(button)) level.mouseEvent(button);
     }
-	
-	public void stop() 
-	{
-		running = false;
-	}
+
+    public void stop() {
+        running = false;
+    }
 
     public int getWidth() {
         return WIDTH;

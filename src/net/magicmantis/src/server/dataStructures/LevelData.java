@@ -1,8 +1,6 @@
 package net.magicmantis.src.server.dataStructures;
 
-import net.magicmantis.src.model.Results;
 import net.magicmantis.src.server.OnlineLevel;
-import net.magicmantis.src.server.dataStructures.EntityData;
 
 import java.util.ArrayList;
 
@@ -19,7 +17,7 @@ public class LevelData {
     /**
      * Store the information about a level for sending to clients.
      *
-     * @param level - which level instance to serialize.
+     * @param level     - which level instance to serialize.
      * @param sessionID - the sessionID of the user to send the data to.
      */
     public LevelData(OnlineLevel level, int sessionID) {
@@ -42,7 +40,9 @@ public class LevelData {
         return height;
     }
 
-    public int getPlayerID() { return playerID; }
+    public int getPlayerID() {
+        return playerID;
+    }
 
     public ArrayList<EntityData> getEntities() {
         return entities;

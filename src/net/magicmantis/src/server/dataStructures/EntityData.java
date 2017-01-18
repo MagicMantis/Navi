@@ -4,7 +4,7 @@ import net.magicmantis.src.model.*;
 
 /**
  * Created by Joseph on 5/10/2015.
- *
+ * <p>
  * EntityData class: This class is used to transfer game object data to and from the server to sync games across
  * all clients. It can hold data of multiple types of classes, as well as the class that the data was taken from.
  */
@@ -14,7 +14,7 @@ public class EntityData {
     private Class tClass;
     private int width, height;
     private double x, y;
-    private int imageOffsetX,imageOffsetY;
+    private int imageOffsetX, imageOffsetY;
 
     //target
     private int team;
@@ -202,7 +202,9 @@ public class EntityData {
         return timer;
     }
 
-    public int getPlayerID() { return playerID; }
+    public int getPlayerID() {
+        return playerID;
+    }
 
     public int getSpawnCooldown() {
         return spawnCooldown;

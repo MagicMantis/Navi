@@ -25,8 +25,7 @@ public abstract class Spawner extends Structure {
             if (spawnCooldown == 0) {
                 spawnEntity();
                 spawnCooldown = spawnRate;
-            }
-            else spawnCooldown--;
+            } else spawnCooldown--;
         }
     }
 

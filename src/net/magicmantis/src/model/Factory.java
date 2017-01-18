@@ -3,8 +3,6 @@ package net.magicmantis.src.model;
 import net.magicmantis.src.server.dataStructures.EntityData;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glVertex2d;
 
 /**
  * Factory class: this structure spawns drones at a periodic rate.
@@ -27,8 +25,7 @@ public class Factory extends Spawner {
         }
         if (droneCount >= (int) level.getOptions().get("droneMax")) {
             deactivate();
-        }
-        else {
+        } else {
             activate();
         }
     }
@@ -52,10 +49,10 @@ public class Factory extends Spawner {
         glColor3d(col[0], col[1], col[2]);
 
         glBegin(GL_LINE_LOOP);
-        glVertex2d(getX()-xView-getWidth()/2, getY()-yView-getHeight()/2);
-        glVertex2d(getX()-xView+getWidth()/2, getY()-yView-getHeight()/2);
-        glVertex2d(getX()-xView+getWidth()/2, getY()-yView+getHeight()/2);
-        glVertex2d(getX()-xView-getWidth()/2, getY()-yView+getHeight()/2);
+        glVertex2d(getX() - xView - getWidth() / 2, getY() - yView - getHeight() / 2);
+        glVertex2d(getX() - xView + getWidth() / 2, getY() - yView - getHeight() / 2);
+        glVertex2d(getX() - xView + getWidth() / 2, getY() - yView + getHeight() / 2);
+        glVertex2d(getX() - xView - getWidth() / 2, getY() - yView + getHeight() / 2);
         glEnd();
 
         //draw respawn box
@@ -63,10 +60,10 @@ public class Factory extends Spawner {
             glColor3d(1d, 1d, 1d);
             double ratio = (double) getSpawnCooldown() / (double) getSpawnRate();
             glBegin(GL_LINE_LOOP);
-            glVertex2d(getX()-xView-getWidth()/2*ratio, getY()-yView-getHeight()/2*ratio);
-            glVertex2d(getX()-xView+getWidth()/2*ratio, getY()-yView-getHeight()/2*ratio);
-            glVertex2d(getX()-xView+getWidth()/2*ratio, getY()-yView+getHeight()/2*ratio);
-            glVertex2d(getX()-xView-getWidth()/2*ratio, getY()-yView+getHeight()/2*ratio);
+            glVertex2d(getX() - xView - getWidth() / 2 * ratio, getY() - yView - getHeight() / 2 * ratio);
+            glVertex2d(getX() - xView + getWidth() / 2 * ratio, getY() - yView - getHeight() / 2 * ratio);
+            glVertex2d(getX() - xView + getWidth() / 2 * ratio, getY() - yView + getHeight() / 2 * ratio);
+            glVertex2d(getX() - xView - getWidth() / 2 * ratio, getY() - yView + getHeight() / 2 * ratio);
             glEnd();
         }
     }

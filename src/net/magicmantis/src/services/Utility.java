@@ -1,14 +1,9 @@
 package net.magicmantis.src.services;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import com.sun.corba.se.spi.orbutil.fsm.Input;
 
-import javax.print.DocFlavor;
 import java.io.*;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Properties;
 
 /**
@@ -66,7 +61,6 @@ public class Utility {
         }
 
     }
-
 
 
 }

@@ -1,16 +1,13 @@
 package net.magicmantis.src.services;
 
 import com.google.gson.Gson;
+import net.magicmantis.src.exceptions.AccessDeniedException;
 import net.magicmantis.src.exceptions.FailedStartGameException;
 import net.magicmantis.src.exceptions.GameNotFoundException;
 import net.magicmantis.src.exceptions.UnknownOptionException;
-import net.magicmantis.src.exceptions.AccessDeniedException;
 import net.magicmantis.src.server.OnlineGame;
 import net.magicmantis.src.server.User;
 import net.magicmantis.src.server.dataStructures.LevelData;
-import net.magicmantis.src.services.ServerController;
-import net.magicmantis.src.services.Utility;
-import org.lwjgl.system.CallbackI;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -42,7 +39,7 @@ public class ServerControllerServer implements ServerController {
 
     @Override
     public void connect() throws IOException {
-        System.out.println("connect() "+user.getID());
+        System.out.println("connect() " + user.getID());
         user.getOutput().writeInt(user.getID());
     }
 
@@ -56,7 +53,7 @@ public class ServerControllerServer implements ServerController {
         System.out.println("matchMake()");
         OnlineGame match = null;
         if (games.size() > 0) {
-            for (OnlineGame g: games) {
+            for (OnlineGame g : games) {
                 if (!g.isFull() && g.isJoinable()) match = g;
             }
         }
@@ -100,11 +97,9 @@ public class ServerControllerServer implements ServerController {
         Object valueObject = ois.readObject();
         if (optionString.equals("allowTeams")) {
             user.getGame().getOptions().put("allowTeams", valueObject);
-        }
-        else if (optionString.equals("spawnFactories")) {
+        } else if (optionString.equals("spawnFactories")) {
             user.getGame().getOptions().put("spawnFactories", valueObject);
-        }
-        else {
+        } else {
             throw new UnknownOptionException();
         }
 
@@ -133,7 +128,8 @@ public class ServerControllerServer implements ServerController {
     public void startGame() throws IOException, FailedStartGameException {
         System.out.println("startGame()");
         int gameID = user.getInput().readInt();
-        if (gameID != user.getGame().getID() || user.getGame().isStarted() || !user.getGame().start()) throw new FailedStartGameException();
+        if (gameID != user.getGame().getID() || user.getGame().isStarted() || !user.getGame().start())
+            throw new FailedStartGameException();
         user.getOutput().writeInt(0);
     }
 
@@ -157,7 +153,7 @@ public class ServerControllerServer implements ServerController {
         while (input.length() > 0) {
             user.userInput.put(input.substring(0, input.indexOf(':')),
                     Boolean.valueOf(input.substring(input.indexOf(':') + 1, input.indexOf(';'))));
-            input = input.substring(input.indexOf(';')+1);
+            input = input.substring(input.indexOf(';') + 1);
         }
     }
 

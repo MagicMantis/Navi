@@ -9,8 +9,12 @@ public abstract class Structure extends Target {
         super(x, y, width, height, team, life, level);
     }
 
-    public boolean isShip() { return false; }
+    public boolean isShip() {
+        return false;
+    }
 
-    public boolean isTarget() { return true; }
+    public boolean isTarget() {
+        return true;
+    }
 
 }

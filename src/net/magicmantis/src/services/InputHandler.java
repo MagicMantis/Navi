@@ -23,7 +23,7 @@ public class InputHandler {
         GLFWKeyCallback keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
-                if ( action == GLFW_PRESS )
+                if (action == GLFW_PRESS)
                     game.keyPressed(key);
                 else if (action == GLFW_RELEASE)
                     game.keyReleased(key);

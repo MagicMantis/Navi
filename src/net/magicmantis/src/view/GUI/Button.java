@@ -1,6 +1,5 @@
 package net.magicmantis.src.view.GUI;
 
-import net.magicmantis.src.view.Game;
 import net.magicmantis.src.services.TextEngine;
 import org.lwjgl.opengl.GL11;
 
@@ -42,17 +41,19 @@ public class Button extends GUIElement {
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glVertex2f(x - width / 2, y - height / 2);
         GL11.glVertex2f(x - width / 2, y + height / 2);
-        GL11.glVertex2f(x+width/2, y+height/2);
-        GL11.glVertex2f(x+width/2, y-height/2);
+        GL11.glVertex2f(x + width / 2, y + height / 2);
+        GL11.glVertex2f(x + width / 2, y - height / 2);
         GL11.glEnd();
 
-        TextEngine.drawText(text, x-3*width/8, y-height/4, 3*width/4, height/2, false);
+        TextEngine.drawText(text, x - 3 * width / 8, y - height / 4, 3 * width / 4, height / 2, false);
     }
 
     public void setActive(boolean active) {
         this.active = active;
     }
 
-    public void setText(String text) { this.text = text; }
+    public void setText(String text) {
+        this.text = text;
+    }
 
 }
